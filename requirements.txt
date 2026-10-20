@@ -1,0 +1,7 @@
+yfinance==1.7.0
+pandas==2.3.3
+numpy==2.5.3
+FinanceDataReader==0.9.100
+scikit-learn==1.9.1
+lxml
+requests
