@@ -224,8 +224,7 @@ padding:16px 20px;transition:.16s ease}
 <body><div class="wrap">
  <div class="top">
   <div class="brand">GAP<i>&middot;</i>SCAN <span>전종목 스캐너</span></div>
-  <div class="tools"><span class="upd">데이터 {when}</span><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div>
- </div>
+  <div class="tools"><span class="upd">데이터 {when}</span><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
  {warn}
  <div class="hero">
   <h1>갭 <em>5%</em> 이상</h1>
@@ -243,17 +242,23 @@ padding:16px 20px;transition:.16s ease}
  <div class="foot">
   갭 = 시가 &divide; 전일종가 &minus; 1 &nbsp;&middot;&nbsp; &lsquo;갭 이후&rsquo;는 갭 발생일 종가 대비 현재 등락 &nbsp;&middot;&nbsp; 주황 바는 15% 기준<br>
    다음 거래일 시가가 전일종가 대비 5% 이상으로 갭업할 확률. &nbsp;&middot;&nbsp; 같은 테마가 함께 있는 종목만 `동일테마` 배지 &nbsp;&middot;&nbsp; 우상단 &#8645; 로 내일순 정렬<br>
-  스캔 {univ}종목 (데이터 확보) &middot; 우상단 &#8635; 업데이트 버튼으로 갱신 (캐시 {cacheh}시간 &middot; 새로 수집 시 약 2분)
+  스캔 {univ}종목 (데이터 확보) &middot; 우상단 &#8635; 업데이트 &rarr; GitHub Actions 에서 Run workflow (약 2분)
  </div>
 </div>
 <script>
 (function(){
  var b=document.getElementById('upd'); if(!b) return;
- var served=(location.protocol==='http:'||location.protocol==='https:');
+ var host=location.hostname;
+ var pages=host.indexOf('github.io')>=0;
  var orig='\u21bb \uc5c5\ub370\uc774\ud2b8';
  function set(t,d){b.textContent=t;b.disabled=d;b.classList.toggle('load',d);}
  b.addEventListener('click',function(){
-   if(!served){alert('\uc5c5\ub370\uc774\ud2b8\ub294 \uac31\uc885\ubaa9\ubcf4\uae30 \uc544\uc774\ucf58(\uc11c\ubc84 \ubaa8\ub4dc)\uc73c\ub85c \uc5f4\uc5c8\uc744 \ub54c \ub3d9\uc791\ud569\ub2c8\ub2e4.');return;}
+   if(pages){
+     b.textContent='\uac31\uc2e0 \ud398\uc774\uc9c0\u2026';
+     location.href='https://github.com/byh1015/gap/actions/workflows/gap-scan.yml';
+     return;
+   }
+   if(location.protocol!=='http:'&&location.protocol!=='https:'){alert('\uc11c\ubc84 \ubaa8\ub4dc\ub85c \uc5f4\uc5b4\uc57c \ud569\ub2c8\ub2e4.');return;}
    set('\uac31\uc2e0 \uc911\u2026',true);
    fetch('/update',{method:'POST'}).then(function(r){return r.json();}).then(function(){
      var iv=setInterval(function(){
@@ -265,7 +270,7 @@ padding:16px 20px;transition:.16s ease}
        }).catch(function(){});
      },2000);
    }).catch(function(){set(orig,false);alert('\uc11c\ubc84 \uc751\ub2f5 \uc5c6\uc74c');});
-  });
+ });
 })();
 (function(){
  var sb=document.getElementById('sort'); if(!sb) return;
