@@ -433,9 +433,6 @@ def related_news(code, gap_date, name="", keys=(), pages=3):
             if age is not None and age > lo_min:
                 continue
             dd = dt.date.today() - dt.timedelta(days=(age or 0) // 1440)
-            # 뉴스검색은 시황기사 유입 방지를 위해 종목명 포함 기사만 채택
-            if name not in ti and not (len(name) >= 5 and name[:5] in ti):
-                continue
             put(age, ti, url, dd)
     key = lambda x: (x[0] if x[0] is not None else 10 ** 9)
     strong.sort(key=key)
