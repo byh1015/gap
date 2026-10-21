@@ -101,7 +101,7 @@ CARD = """<div class="row{hot}" data-score="{ts}">
   {news}
  </div>
  <div class="g"><b>{gap}%</b><i class="tr"><em style="width:{w}%"></em></i></div>
- <div class="r"><div class="p">{prc}</div><div class="a {dir}">{after}%</div></div>
+ <div class="r"><div class="p">{prc}</div></div>
 </div>"""
 
 PAGE = """<!doctype html>
@@ -272,14 +272,21 @@ padding:16px 20px;transition:.16s ease}
    }).catch(function(){set(orig,false);alert('\uc11c\ubc84 \uc751\ub2f5 \uc5c6\uc74c');});
  });
 })();
-(function(){
- var sb=document.getElementById('sort'); if(!sb) return;
- var wrap=document.querySelector('.rows'); if(!wrap) return;
- var orig=Array.prototype.slice.call(wrap.children);
- var cards=Array.prototype.slice.call(wrap.querySelectorAll('.row'));
- var grps=Array.prototype.slice.call(wrap.querySelectorAll('.grp'));
- var byScore=false;
- sb.addEventListener('click',function(){
+ (function(){
+  var sb=document.getElementById('sort'); if(!sb) return;
+  var wrap=document.querySelector('.rows'); if(!wrap) return;
+  var orig=Array.prototype.slice.call(wrap.children);
+  var cards=Array.prototype.slice.call(wrap.querySelectorAll('.row'));
+  var grps=Array.prototype.slice.call(wrap.querySelectorAll('.grp'));
+  var byScore=false;
+  function saveOpen(){
+   return cards.map(function(c){var d=c.querySelector('details.nws');return !!(d&&d.open);});
+  }
+  function restoreOpen(st){
+   cards.forEach(function(c,i){var d=c.querySelector('details.nws');if(d)d.open=!!st[i];});
+  }
+  sb.addEventListener('click',function(){
+   var st=saveOpen();
    if(!byScore){
      cards.slice().sort(function(a,b){return (parseFloat(b.getAttribute('data-score'))||0)-(parseFloat(a.getAttribute('data-score'))||0);}).forEach(function(el){wrap.appendChild(el);});
      grps.forEach(function(g){g.style.display='none';});
@@ -289,8 +296,9 @@ padding:16px 20px;transition:.16s ease}
      grps.forEach(function(g){g.style.display='';});
      sb.innerHTML='&#8645; \ub0b4\uc77c\uc21c'; byScore=false;
    }
- });
-})();
+   restoreOpen(st);
+  });
+ })();
 </script>
 </body></html>"""
 
