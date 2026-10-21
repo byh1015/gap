@@ -366,7 +366,8 @@ NEWS_NOISE = ("주식마감", "[마감]", "장마감", "마감시황", "증시]"
               "거래대금", "종목NOW", "장분석", "장초반", "[개장", "[장중",
               "장 분석", "급등 종목", "상한가 종목", "특징주 정리", "외국인", "기관 순매",
               "거래 1위", "거래1위", "거래상위", "거래 상위", "거래 上", "상위 종목",
-              "대장주", "반도체 대표주", "종목별", "업종별", "테마주 약세", "테마 약세")
+              "대장주", "반도체 대표주", "종목별", "업종별", "테마주 약세", "테마 약세",
+              "애프터마켓", "후장", "마켓리뷰", "장마감 리뷰", "시간외")
 
 
 def _news_related(name, title):
@@ -432,6 +433,9 @@ def related_news(code, gap_date, name="", keys=(), pages=3):
             if age is not None and age > lo_min:
                 continue
             dd = dt.date.today() - dt.timedelta(days=(age or 0) // 1440)
+            # 뉴스검색은 시황기사 유입 방지를 위해 종목명 포함 기사만 채택
+            if name not in ti and not (len(name) >= 5 and name[:5] in ti):
+                continue
             put(age, ti, url, dd)
     key = lambda x: (x[0] if x[0] is not None else 10 ** 9)
     strong.sort(key=key)
