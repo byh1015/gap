@@ -34,6 +34,19 @@ NEWS_KW = ("특징주", "실적", "상한가", "계약", "수주", "공급", "�
            "승인", "허가", "임상", "개발", "출시", "양산", "체결", "MOU", "지분", "유상증자")
 MAT_DAY_W = 2   # 갭일(당일) 기사 가중치
 
+# 투자자 보호 공시 — 기간/개수 제한 없이 반드시 전부 표시
+# (단기과열·투자주의·투자경고는 대개 갭 발생 '이후'에 지정되므로
+#  갭일까지만 보던 기존 로직에서는 놓침.  공매도 과열종목도 과열 계열로 포함)
+ALERT_KW = (
+    ("투자경고", "투자경고"),
+    ("투자주의", "투자주의"),
+    ("단기과열", "단기과열"),
+    ("과열종목", "과열종목"),
+)
+ALERT_LOOKBACK = 2      # 갭일 이전 N일
+ALERT_LOOKAHEAD = 7     # 갭일 이후 N일 (지정은 보통 갭 이후)
+NEWS_CACHE_VER = 2      # 공시 구조 변경 시 올려서 캐시 무효화
+
 SCORE_JSON = os.path.join(HERE, "recur_next.json")
 SCORE_FALLBACK = {
     "feats": ["gap", "lval", "limup", "bodypos", "kq", "lvm", "rng", "pre5",
@@ -101,6 +114,7 @@ CARD = """<div class="row{hot}" data-score="{ts}">
  <div class="l">
   <div class="nm">{name}<span class="cd">{code}</span>{nxt}</div>
   <div class="chips"><span class="chip">{since}</span><span class="chip v">{val}억</span><span class="chip">{mkt}</span>{theme}</div>
+  {alerts}
   {news}
  </div>
  <div class="g"><b>{gap}%</b><i class="tr"><em style="width:{w}%"></em></i></div>
@@ -167,6 +181,13 @@ padding:16px 20px;transition:.16s ease}
 .chip.tot.md{color:#a9d0ff;background:#1f3347;border-color:#3a5f80}
 .chip.tot.lo{color:#8b96ad;background:#1d2330;border-color:#333d52}
 .chip.thm{color:#7ee0a3;background:#0f2419;border-color:#1e4d36}
+.als{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.al{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:3.5px 9px;border-radius:7px;text-decoration:none;border:1px solid;line-height:1.55}
+.al i{font-style:normal;font-weight:600;opacity:.72;font-variant-numeric:tabular-nums;letter-spacing:0}
+.al:hover{filter:brightness(1.3);text-decoration:none}
+.al-w{color:#ffc9c9;background:#3a1418;border-color:#7d2b32}
+.al-c{color:#ffdfad;background:#3a2a12;border-color:#7d5a24}
+.al-h{color:#cfe6ff;background:#13283c;border-color:#2a5b86}
 .g{width:132px;text-align:right}
 .g b{display:block;font-size:27px;font-weight:800;color:#ff8a3d;letter-spacing:-1.4px;font-variant-numeric:tabular-nums}
 .tr{display:block;height:5px;border-radius:5px;background:#1c2740;margin-top:8px;overflow:hidden}
@@ -609,14 +630,31 @@ def _fetch_disc_raw(code):
     return out
 
 
+def alert_label(title):
+    """제목에서 투자자 보호 공시 종류 라벨. 없으면 None.
+    ALERT_KW 순서 = 심각도 순(투자경고 > 투자주의 > 단기과열 > 과열종목)."""
+    for kw, lab in ALERT_KW:
+        if kw in title:
+            return lab
+    return None
+
+
 def disclosure_for(code, gap_date):
-    """갭 발생일 기준 직전 2일~당일 공시 최대 2건 -> [(mm/dd, title, url)]"""
+    """갭일 기준 공시.
+
+    투자자 보호 공시(투자경고/투자주의/단기과열/공매도 과열)는 대개 갭 발생
+    '이후'에 지정되므로 기간·개수 제한 없이 전부 채택한다.
+    그 외 공시는 갭일 이전 2일~당일, 최대 2건(기존과 동일).
+
+    -> {"alert": [(mmdd, title, url, kind)...], "normal": [(mmdd, title, url)...]}
+    """
     try:
         items = _fetch_disc_raw(code)
     except Exception:
-        return []
+        return {"alert": [], "normal": []}
     gd = dt.date.fromisoformat(gap_date)
-    hit = []
+    url = "https://m.stock.naver.com/domestic/stock/%s/management/disclosure" % code
+    alerts, normals = [], []
     for ds, ti in items:
         if not ds:
             continue
@@ -624,10 +662,16 @@ def disclosure_for(code, gap_date):
             d = dt.datetime.fromisoformat(ds).date()
         except Exception:
             continue
-        if 0 <= (gd - d).days <= 2:
-            hit.append((ds[5:7] + "/" + ds[8:10], ti))
-    url = "https://m.stock.naver.com/domestic/stock/%s/management/disclosure" % code
-    return [(d, ti, url) for d, ti in hit[:2]]
+        mmdd = ds[5:7] + "/" + ds[8:10]
+        lag = (gd - d).days          # 양수 = 갭일 이전, 음수 = 갭일 이후
+        kind = alert_label(ti)
+        if kind is not None:
+            if -ALERT_LOOKAHEAD <= lag <= ALERT_LOOKBACK:
+                alerts.append((mmdd, ti, url, kind))
+        elif 0 <= lag <= 2:
+            normals.append((mmdd, ti, url))
+    alerts.sort(key=lambda x: [k for _, k in ALERT_KW].index(x[3]))
+    return {"alert": alerts[:8], "normal": normals[:2]}
 
 
 def _api_json(u):
@@ -692,7 +736,8 @@ def get_news(rows, force=False):
     changed = False
     for r in rows:
         k = (r["code"], r["date"])
-        if force or k not in cache or "mat" not in (cache.get(k) or {}):
+        c = cache.get(k) or {}
+        if force or k not in cache or "mat" not in c or c.get("ver") != NEWS_CACHE_VER:
             until = dt.date.fromisoformat(r["date"]) - dt.timedelta(days=MAT_LO)
             try:
                 items = _news_fetch(r["code"], until)
@@ -701,9 +746,10 @@ def get_news(rows, force=False):
             try:
                 disc = disclosure_for(r["code"], r["date"])
             except Exception:
-                disc = []
+                disc = {"alert": [], "normal": []}
             cache[k] = {"news": news_for(r["date"], items),
                         "disc": disc,
+                        "ver": NEWS_CACHE_VER,
                         "mat": material_score(r["date"], r.get("name", ""), items)}
             changed = True
     if changed:
@@ -714,7 +760,10 @@ def get_news(rows, force=False):
     for r in rows:
         e = cache.get((r["code"], r["date"])) or {}
         r["news"] = e.get("news")
-        r["disc"] = e.get("disc")
+        d = e.get("disc") or {"alert": [], "normal": []}
+        if isinstance(d, list):          # 옛 캐시 호환
+            d = {"alert": [], "normal": d}
+        r["disc"] = d
         r["mat"] = e.get("mat") or {"n": 0, "s": 0, "nd": 0, "score": 0, "tier": 0}
         try:
             r["latest"] = related_news(r["code"], r["date"], r.get("name", ""),
@@ -887,6 +936,22 @@ def render(rows, nuniv, when, failed=False):
             theme_html = '<span class="chip thm" title="현재 목록에서 같은 테마">%s</span>' % " · ".join(parts)
         else:
             theme_html = ""
+        # 투자자 보호 공시(투자경고/투자주의/단기과열/공매도 과열) — 접히지 않고 항상 표시
+        alerts_html = ""
+        al = (r.get("disc") or {}).get("alert") or []
+        if al:
+            cls = {"투자경고": "w", "투자주의": "c", "단기과열": "h", "과열종목": "h"}
+            seen, boxes = set(), []
+            for mmdd, ti, u, kind in al:
+                key = (kind, mmdd)
+                if key in seen:
+                    continue
+                seen.add(key)
+                boxes.append('<a class="al al-%s" href="%s" target="_blank" rel="noopener" title="%s">'
+                             '<b>%s</b><i>%s</i></a>'
+                             % (cls.get(kind, "h"), esc(u or "#"), esc(ti), esc(kind), esc(mmdd)))
+            if boxes:
+                alerts_html = '<div class="als">%s</div>' % "".join(boxes)
         ts = int(r.get("score", 0))
         tcls = "hi" if ts >= 40 else ("md" if ts >= 30 else "lo")
         rp = "%d" % round(r.get("rec", 0.0))
@@ -906,6 +971,7 @@ def render(rows, nuniv, when, failed=False):
             .replace("{dir}", "up" if r["after"] > 0 else "dn")
             .replace("{nxt}", '<span class="nxt">NXT</span>' if r["nxt"] else "")
             .replace("{theme}", theme_html)
+            .replace("{alerts}", alerts_html)
             .replace("{news}", news_html)
             .replace("{w}", "%.1f" % min(100.0, gap / 15 * 100)))
     gcount = {}
