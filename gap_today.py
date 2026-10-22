@@ -21,6 +21,7 @@ CACHE = os.path.join(HERE, "gap_all_cache.pkl")
 NXT_CACHE = os.path.join(HERE, "nxt_list.csv")
 NEWS_CACHE = os.path.join(HERE, "gap_news_cache.pkl")
 THEME_CACHE = os.path.join(HERE, "theme_cache.pkl")
+HIST = os.path.join(HERE, "gap_history.csv")   # 갭 출현 이력(누적)
 THEME_EXCL = ("지수", "Index")   # 지수성 테마 제외(넓은 백분류, 그룹 의미 약함)
 
 GAP = 0.05          # 갭 5% 이상
@@ -888,6 +889,77 @@ def scan(obj):
     return rows, len(frames)
 
 
+HIST_COLS = ["date", "code", "name", "mkt", "g", "open", "prev_close",
+             "close", "high", "low", "ret_day", "val", "next_date",
+             "next_open", "next_close", "ret_next", "ret_next_open"]
+
+
+def record_history(obj):
+    """갭 출현 이력을 gap_history.csv 에 누적한다.
+
+    프레임 윈도우(약 1mo) 안의 갭은 매번 다시 계산해 가장 완전한 값으로 채우고,
+    그 창 밖으로 벗어난 옛 행은 그대로 남겨 두므로 기록은 무한히 쌓인다.
+    MIN_VAL 필터는 걸지 않는다 — 나중에 거래대금 임계값을 되짚어 최적화할 수
+    있도록 갭 5% 이상 전량을 기록한다.  예외가 나도 스캔 결과는 내보낸다."""
+    try:
+        old = pd.read_csv(HIST, dtype=str)
+    except Exception:
+        old = None
+    keep = []
+    seen = set()
+    frames, codes = obj["frames"], obj["codes"]
+    for tk, d in frames.items():
+        code = tk.split(".")[0]
+        name = codes.get(tk, tk)
+        mkt = "KOSDAQ" if tk.endswith(".KQ") else "KOSPI"
+        o = d["Open"].values; hi = d["High"].values
+        lw = d["Low"].values; c = d["Close"].values; v = d["Volume"].values
+        idx = d.index; n = len(c)
+        for i in range(1, n):
+            if c[i - 1] <= 0:
+                continue
+            g = o[i] / c[i - 1] - 1
+            if g < GAP:
+                continue
+            gd = str(idx[i].date())
+            seen.add((gd, code))
+            opn = float(o[i]); cl = float(c[i])
+            row = {"date": gd, "code": code, "name": name, "mkt": mkt,
+                   "g": round(float(g), 5), "open": round(opn, 2),
+                   "prev_close": round(float(c[i - 1]), 2), "close": round(cl, 2),
+                   "high": round(float(hi[i]), 2), "low": round(float(lw[i]), 2),
+                   "ret_day": (round(cl / opn - 1, 5) if opn > 0 else ""),
+                   "val": round(float(v[i] * c[i] / 1e8), 1),
+                   "next_date": "", "next_open": "", "next_close": "",
+                   "ret_next": "", "ret_next_open": ""}
+            if i + 1 < n:
+                no = float(o[i + 1]); nc = float(c[i + 1])
+                row["next_date"] = str(idx[i + 1].date())
+                row["next_open"] = round(no, 2)
+                row["next_close"] = round(nc, 2)
+                if cl > 0:
+                    row["ret_next"] = round(nc / cl - 1, 5)
+                    if no > 0:
+                        row["ret_next_open"] = round(nc / no - 1, 5)
+            keep.append(row)
+    n_old = 0
+    if old is not None and len(old):
+        for r in old.to_dict("records"):
+            k = (r.get("date"), str(r.get("code", "")).zfill(6))
+            if k[0] and k[1] and k not in seen:
+                r["code"] = k[1]
+                keep.append({c0: r.get(c0, "") for c0 in HIST_COLS})
+                n_old += 1
+    if not keep:
+        return {"rows": 0}
+    df = pd.DataFrame(keep, columns=HIST_COLS)
+    df = df.sort_values(["date", "g"], ascending=[False, False], kind="mergesort")
+    tmp = HIST + ".tmp"
+    df.to_csv(tmp, index=False, encoding="utf-8-sig")
+    os.replace(tmp, HIST)
+    return {"rows": len(df), "new": len(keep) - n_old, "kept": n_old}
+
+
 def _age_label(mins):
     """경과분 -> (라벨, 색클래스). 24시간 내는 'N시간 전'/'N분 전'."""
     if mins is None:
@@ -1015,6 +1087,11 @@ def render(rows, nuniv, when, failed=False):
 
 def build(force=False):
     obj, cached = get_data(force=force)
+    try:
+        hist = record_history(obj)
+    except Exception as e:
+        print("이력 기록 실패:", e)
+        hist = {}
     rows, nuniv = scan(obj)
     try:
         th = get_themes(force=force)
@@ -1041,7 +1118,7 @@ def build(force=False):
         json.dump({"n": n, "when": obj["when"]}, open(os.path.join(HERE, "gap_all_meta.json"), "w"))
     except Exception:
         pass
-    return {"n": n, "when": when, "univ": nuniv}
+    return {"n": n, "when": when, "univ": nuniv, "hist": hist}
 
 
 def _maybe_open():
@@ -1061,14 +1138,20 @@ def _maybe_open():
 
 def main():
     opened = os.path.exists(HTML) and _maybe_open()
+    hist = {}
     try:
         res = build()
         n = res["n"]
+        hist = res.get("hist", {})
     except Exception as e:
         print("실패:", e)
         render([], 0, dt.datetime.now().strftime("%Y-%m-%d %H:%M"), True)
         n = 0
     print("생성 ->", HTML, "/", n, "종목")
+    if hist:
+        print("이력 -> %s (%d행, 신규 %d, 이월 %d)"
+              % (os.path.basename(HIST), hist.get("rows", 0),
+                 hist.get("new", 0), hist.get("kept", 0)))
     if not opened:
         _maybe_open()
 
