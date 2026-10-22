@@ -1044,23 +1044,33 @@ def build(force=False):
     return {"n": n, "when": when, "univ": nuniv}
 
 
+def _maybe_open():
+    """HTML을 기본 프로그램으로 연다.
+    os.startfile 은 Windows 전용이라 Linux(Actions)에선 아예 없으므로
+    속성 확인을 하고, CI/서버에서는 건너뛴다. 실패해도 절대 예외를 밖으로 넘기지 않는다."""
+    if os.environ.get("GAP_NO_OPEN") == "1" or os.environ.get("GAP_NO_PUSH") == "1":
+        return False
+    if not hasattr(os, "startfile"):
+        return False
+    try:
+        os.startfile(HTML)
+        return True
+    except Exception:
+        return False
+
+
 def main():
-    opened = False
-    if os.path.exists(HTML):
-        try:
-            os.startfile(HTML); opened = True
-        except Exception:
-            pass
+    opened = os.path.exists(HTML) and _maybe_open()
     try:
         res = build()
         n = res["n"]
     except Exception as e:
-        print("실패:", e); failed = True
+        print("실패:", e)
         render([], 0, dt.datetime.now().strftime("%Y-%m-%d %H:%M"), True)
         n = 0
     print("생성 ->", HTML, "/", n, "종목")
     if not opened:
-        os.startfile(HTML)
+        _maybe_open()
 
 
 if __name__ == "__main__":
