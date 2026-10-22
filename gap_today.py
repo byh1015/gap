@@ -8,7 +8,10 @@ try:
 except Exception:
     pass
 import numpy as np, pandas as pd, yfinance as yf
-import FinanceDataReader as fdr
+try:
+    import FinanceDataReader as fdr
+except Exception:
+    fdr = None
 import warnings; warnings.filterwarnings("ignore")
 
 HERE = os.environ.get("GAP_HERE") or os.path.dirname(os.path.abspath(__file__))
@@ -721,7 +724,21 @@ def get_news(rows, force=False):
 
 
 def get_universe():
+    """전종목 코드->이름. universe.csv 우선(오프라인/CI용), 없으면 FDR."""
     codes = {}
+    up = os.path.join(HERE, "universe.csv")
+    if os.path.exists(up):
+        import csv as _csv
+        with open(up, "r", encoding="utf-8-sig", newline="") as f:
+            for row in _csv.DictReader(f):
+                t = (row.get("ticker") or "").strip()
+                n = (row.get("name") or "").strip()
+                if t:
+                    codes[t] = n
+        if codes:
+            return codes
+    if fdr is None:
+        raise RuntimeError("universe.csv 없음이고 FinanceDataReader도 미설치")
     for mk, suf in [("KOSPI", ".KS"), ("KOSDAQ", ".KQ")]:
         for _, r in fdr.StockListing(mk).iterrows():
             codes[str(r["Code"]) + suf] = str(r["Name"])
@@ -923,8 +940,8 @@ def render(rows, nuniv, when, failed=False):
     if os.environ.get("GAP_NO_PUSH") != "1":
         try:
             import subprocess
-            subprocess.run([sys.executable, os.path.join(HERE, "push_site.py")],
-                           timeout=90, cwd=HERE)
+            subprocess.run([sys.executable, os.path.join(HERE, "push_site.py"), HTML],
+                           timeout=120, cwd=HERE)
         except Exception:
             pass
     return len(rows)
