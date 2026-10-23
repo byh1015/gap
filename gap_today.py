@@ -14,6 +14,15 @@ except Exception:
     fdr = None
 import warnings; warnings.filterwarnings("ignore")
 
+KST = dt.timezone(dt.timedelta(hours=9))
+
+
+def _now():
+    """한국 시각. GitHub Actions 러너는 UTC라서 그대로 쓰면 화면 시각과
+    뉴스 'N시간 전' 경과분이 9시간 어긋난다."""
+    return dt.datetime.now(KST)
+
+
 HERE = os.environ.get("GAP_HERE") or os.path.dirname(os.path.abspath(__file__))
 _HTML_DEF = r"C:\Users\byh10\Documents\gap_today.html"
 HTML = os.environ.get("GAP_HTML") or (_HTML_DEF if os.path.isdir(os.path.dirname(_HTML_DEF)) else os.path.join(HERE, "gap_today.html"))
@@ -249,7 +258,7 @@ padding:16px 20px;transition:.16s ease}
 <body><div class="wrap">
  <div class="top">
   <div class="brand">GAP<i>&middot;</i>SCAN <span>전종목 스캐너</span></div>
-  <div class="tools"><span class="upd">데이터 {when}</span><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
+  <div class="tools"><span class="upd">데이터 {when} (KST)</span><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
  {warn}
  <div class="hero">
   <h1>갭 <em>5%</em> 이상</h1>
@@ -417,10 +426,10 @@ def related_news(code, gap_date, name="", keys=(), pages=3):
     네이버 종목뉴스 + 네이버 뉴스검색(사회이슈 포함)을 합쳐 중복 제거.
     -> [(경과분, 제목, url, 발행일)] 최신순 (최대 8건). 경과분 None=시각미상."""
     lo = dt.date.fromisoformat(gap_date) - dt.timedelta(days=1)
-    cut = dt.date.today() - dt.timedelta(days=60)   # 검색 커버 한계
+    cut = _now().date() - dt.timedelta(days=60)   # 검색 커버 한계
     lo = max(lo, cut)
-    lo_min = (dt.date.today() - lo).days * 1440
-    now = dt.datetime.now()
+    lo_min = (_now().date() - lo).days * 1440
+    now = _now()
 
     def named(ti):
         return bool(name) and (name in ti or (len(name) >= 5 and name[:5] in ti))
@@ -440,7 +449,7 @@ def related_news(code, gap_date, name="", keys=(), pages=3):
 
     for x in items:
         dd, ti, body, iid, tot, url, ds = x
-        if dd < lo or dd > dt.date.today():
+        if dd < lo or dd > _now().date():
             continue
         mins = None
         if len(ds) >= 12:
@@ -451,13 +460,13 @@ def related_news(code, gap_date, name="", keys=(), pages=3):
             except Exception:
                 mins = None
         if mins is None:
-            mins = (dt.date.today() - dd).days * 1440
+            mins = (_now().date() - dd).days * 1440
         put(mins, ti, url, dd)
     if name:
         for age, ti, url in naver_search_news(name, limit=20):
             if age is not None and age > lo_min:
                 continue
-            dd = dt.date.today() - dt.timedelta(days=(age or 0) // 1440)
+            dd = _now().date() - dt.timedelta(days=(age or 0) // 1440)
             put(age, ti, url, dd)
     key = lambda x: (x[0] if x[0] is not None else 10 ** 9)
     strong.sort(key=key)
@@ -507,7 +516,7 @@ def _parse_age(txt):
     if m:
         try:
             d = dt.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-            return (dt.date.today() - d).days
+            return (_now().date() - d).days
         except Exception:
             return None
     return None
@@ -530,7 +539,7 @@ def _parse_min(txt):
     if m:
         try:
             d = dt.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-            return (dt.date.today() - d).days * 1440
+            return (_now().date() - d).days * 1440
         except Exception:
             return None
     return None
@@ -827,7 +836,7 @@ def get_data(force=False):
     codes = get_universe()
     frames = download_all(list(codes))
     obj = {"frames": frames, "codes": codes,
-           "when": dt.datetime.now().strftime("%Y-%m-%d %H:%M")}
+           "when": _now().strftime("%Y-%m-%d %H:%M")}
     with open(CACHE, "wb") as f:
         pickle.dump(obj, f)
     return obj, False
@@ -1145,7 +1154,7 @@ def main():
         hist = res.get("hist", {})
     except Exception as e:
         print("실패:", e)
-        render([], 0, dt.datetime.now().strftime("%Y-%m-%d %H:%M"), True)
+        render([], 0, _now().strftime("%Y-%m-%d %H:%M"), True)
         n = 0
     print("생성 ->", HTML, "/", n, "종목")
     if hist:
