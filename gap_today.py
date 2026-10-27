@@ -1056,7 +1056,6 @@ def render(rows, nuniv, when, failed=False):
             .replace("{dir}", "up" if r["after"] > 0 else "dn")
             .replace("{nxt}", '<span class="nxt">NXT</span>' if r["nxt"] else "")
             .replace("{nxtf}", "1" if r["nxt"] else "0")
-            .replace("{nxtf}", "1" if r["nxt"] else "0")
             .replace("{theme}", theme_html)
             .replace("{alerts}", alerts_html)
             .replace("{news}", news_html)
