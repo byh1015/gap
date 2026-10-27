@@ -120,7 +120,7 @@ def apply_scores(rows):
         r["rec"] = p
         r["score"] = int(round(W_REC * p + W_MAT * mat))
 
-CARD = """<div class="row{hot}" data-score="{ts}">
+CARD = """<div class="row{hot}" data-score="{ts}" data-nxt="{nxtf}">
  <div class="l">
   <div class="nm">{name}<span class="cd">{code}</span>{nxt}</div>
   <div class="chips"><span class="chip">{since}</span><span class="chip v">{val}억</span><span class="chip">{mkt}</span>{theme}</div>
@@ -147,6 +147,7 @@ font-family:"Pretendard Variable",Pretendard,"Malgun Gothic","맑은 고딕",sys
 .brand span{color:#5d6b8c;font-weight:600;margin-left:9px;font-size:13.5px}
 .upd{color:#5d6b8c;font-size:12.5px}
 .tools{display:flex;align-items:center;gap:12px}
+button#filtnxt{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#161e33;border:1px solid #28355e;border-radius:10px;padding:7px 12px;cursor:pointer}button#filtnxt.on{color:#fff;background:#263a7a;border-color:#3a56b8}
 button#upd{font:inherit;font-size:13px;font-weight:700;color:#dbe6ff;background:#1a2740;border:1px solid #2c3d63;border-radius:10px;padding:8px 15px;cursor:pointer;transition:.15s ease}
 button#upd:hover{background:#22325a;border-color:#3c5488}
 button#upd:disabled{opacity:.7;cursor:default}
@@ -258,7 +259,7 @@ padding:16px 20px;transition:.16s ease}
 <body><div class="wrap">
  <div class="top">
   <div class="brand">GAP<i>&middot;</i>SCAN <span>전종목 스캐너</span></div>
-  <div class="tools"><span class="upd">데이터 {when} (KST)</span><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
+   <div class="tools"><span class="upd">데이터 {when} (KST)</span><button id="filtnxt" type="button">NXT만</button><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
  {warn}
  <div class="hero">
   <h1>갭 <em>5%</em> 이상</h1>
@@ -281,6 +282,9 @@ padding:16px 20px;transition:.16s ease}
 </div>
 <script>
 (function(){
+  var fn=document.getElementById('filtnxt');
+  if(fn){var on=false;fn.addEventListener('click',function(){on=!on;fn.classList.toggle('on',on);document.querySelectorAll('.row').forEach(function(r){if(!on){r.style.display='';return;}r.style.display=r.getAttribute('data-nxt')==='1'?'':'none';});});}
+
  var b=document.getElementById('upd'); if(!b) return;
  var host=location.hostname;
  var pages=host.indexOf('github.io')>=0;
@@ -1051,6 +1055,8 @@ def render(rows, nuniv, when, failed=False):
             .replace("{after}", "%+.1f" % (r["after"] * 100))
             .replace("{dir}", "up" if r["after"] > 0 else "dn")
             .replace("{nxt}", '<span class="nxt">NXT</span>' if r["nxt"] else "")
+            .replace("{nxtf}", "1" if r["nxt"] else "0")
+            .replace("{nxtf}", "1" if r["nxt"] else "0")
             .replace("{theme}", theme_html)
             .replace("{alerts}", alerts_html)
             .replace("{news}", news_html)
