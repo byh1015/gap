@@ -164,7 +164,7 @@ button#sort:hover{background:#1d2a45;border-color:#3c5488}
 .st span{display:block;color:#6b7aa0;font-size:12.5px;margin-top:5px}
 .st.gap b{color:#ff4d6a}
 .st.up b{color:#3ddc97}
-.rows{display:flex;flex-direction:column;gap:10px}
+.list{display:flex;flex-direction:column;gap:10px}
 .row{display:flex;align-items:center;gap:18px;background:#0e1626;border:1px solid #1c2740;border-radius:15px;
 padding:16px 20px;transition:.16s ease}
 .row:hover{background:#131d33;border-color:#2e3f66;transform:translateY(-1px)}
@@ -238,7 +238,7 @@ padding:16px 20px;transition:.16s ease}
  .st{padding:13px 14px 11px;border-radius:13px}
  .st b{font-size:24px}
  .st span{font-size:11.5px}
- .rows{gap:9px}
+ .list{gap:9px}
  .row{flex-wrap:wrap;padding:13px 14px;gap:8px 12px}
  .l{flex:1 1 100%;order:1}
  .nm{font-size:16px}
@@ -271,7 +271,7 @@ padding:16px 20px;transition:.16s ease}
   <div class="st"><b>{maxgap}</b><span>최고 갭</span></div>
   <div class="st up"><b>{nxt}</b><span>NXT 거래가능</span></div>
  </div>
- <div class="rows">
+ <div class="list">
 {rows}
  </div>
  <div class="foot">
@@ -283,7 +283,7 @@ padding:16px 20px;transition:.16s ease}
 <script>
 (function(){
   var fn=document.getElementById('filtnxt');
-  if(fn){var on=false;fn.addEventListener('click',function(){on=!on;fn.classList.toggle('on',on);document.querySelectorAll('.row').forEach(function(r){if(!on){r.style.display='';return;}r.style.display=r.getAttribute('data-nxt')==='1'?'':'none';});});}
+  if(fn){var on=false;fn.addEventListener('click',function(){on=!on;fn.classList.toggle('on',on);document.querySelectorAll('.list > .row').forEach(function(r){if(!on){r.style.display='';return;}r.style.display=r.getAttribute('data-nxt')==='1'?'':'none';});});}
 
  var b=document.getElementById('upd'); if(!b) return;
  var host=location.hostname;
