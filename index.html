@@ -31,7 +31,7 @@ button#sort:hover{background:#1d2a45;border-color:#3c5488}
 .st span{display:block;color:#6b7aa0;font-size:12.5px;margin-top:5px}
 .st.gap b{color:#ff4d6a}
 .st.up b{color:#3ddc97}
-.rows{display:flex;flex-direction:column;gap:10px}
+.list{display:flex;flex-direction:column;gap:10px}
 .row{display:flex;align-items:center;gap:18px;background:#0e1626;border:1px solid #1c2740;border-radius:15px;
 padding:16px 20px;transition:.16s ease}
 .row:hover{background:#131d33;border-color:#2e3f66;transform:translateY(-1px)}
@@ -105,7 +105,7 @@ padding:16px 20px;transition:.16s ease}
  .st{padding:13px 14px 11px;border-radius:13px}
  .st b{font-size:24px}
  .st span{font-size:11.5px}
- .rows{gap:9px}
+ .list{gap:9px}
  .row{flex-wrap:wrap;padding:13px 14px;gap:8px 12px}
  .l{flex:1 1 100%;order:1}
  .nm{font-size:16px}
@@ -126,190 +126,321 @@ padding:16px 20px;transition:.16s ease}
 <body><div class="wrap">
  <div class="top">
   <div class="brand">GAP<i>&middot;</i>SCAN <span>전종목 스캐너</span></div>
-   <div class="tools"><span class="upd">데이터 2026-10-27 19:49 (신규) (KST)</span><button id="filtnxt" type="button">NXT만</button><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
+   <div class="tools"><span class="upd">데이터 2026-10-28 17:44 (캐시) (KST)</span><button id="filtnxt" type="button">NXT만</button><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
  
  <div class="hero">
   <h1>갭 <em>5%</em> 이상</h1>
   <p>전종목 KOSPI+KOSDAQ &middot; 최근 3거래일 &middot; 시가 &gt; 전일종가 &times; 1.05 &middot; 갭일 거래대금 200억+</p>
  </div>
  <div class="stats">
-  <div class="st gap"><b>17</b><span>감지 종목</span></div>
-  <div class="st"><b>17</b><span>최근 1~2일 갭</span></div>
+  <div class="st gap"><b>30</b><span>감지 종목</span></div>
+  <div class="st"><b>24</b><span>최근 1~2일 갭</span></div>
   <div class="st"><b>+13.8%</b><span>최고 갭</span></div>
-  <div class="st up"><b>10</b><span>NXT 거래가능</span></div>
+  <div class="st up"><b>17</b><span>NXT 거래가능</span></div>
  </div>
- <div class="rows">
-<div class="grp">오늘<span class="gn">11개</span></div>
-<div class="row hot" data-score="9" data-nxt="1">
+ <div class="list">
+<div class="grp">오늘<span class="gn">15개</span></div>
+<div class="row hot" data-score="16" data-nxt="1">
  <div class="l">
-  <div class="nm">티에프이<span class="cd">425420</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">377억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(4) · 반도체 장비(2)</span></div>
+  <div class="nm">나무가<span class="cd">190510</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">464억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">카메라모듈/부품(2) · 갤럭시 부품주(2)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">7시간 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://www.ppss.kr/news/articleView.html?idxno=317466" target="_blank" rel="noopener"><span class="nd">7시간 전</span>[오늘의 특징주] 이지트로닉스·캠시스·대원 상한가...로봇·반도체 관...</a><a class="fresh" href="https://www.pinpointnews.co.kr/news/articleView.html?idxno=498783" target="_blank" rel="noopener"><span class="nd">9시간 전</span>SK하이닉스 주가 신바람…반도체 장비주로 번진 AI 투자 열기</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">어제 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/030/0003479218" target="_blank" rel="noopener"><span class="nd">어제</span>현대차 &#x27;아틀라스&#x27; 공급망 공개에 관련주 급등…나무가·캠시스 30% 가...</a></div></details>
  </div>
- <div class="g"><b>+8.1%</b><i class="tr"><em style="width:54.2%"></em></i></div>
- <div class="r"><div class="p">76,200</div></div>
+ <div class="g"><b>+12.8%</b><i class="tr"><em style="width:85.0%"></em></i></div>
+ <div class="r"><div class="p">18,310</div></div>
 </div>
-<div class="row" data-score="1" data-nxt="1">
+<div class="row hot" data-score="4" data-nxt="0">
  <div class="l">
-  <div class="nm">SK스퀘어<span class="cd">402340</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">6,553억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">S7(삼성전자/SK하이닉스 등)(2) · 밸류업(24년 기업가치 제고계획 발표)(3)</span></div>
+  <div class="nm">빛과전자<span class="cd">069540</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,620억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">광통신(광케이블/광섬유 등)(4) · 통신장비(4)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/003/0014280667" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하닉, 사상최대 주주환원하나…SK 9%↑ SK스퀘어 12%↑</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432034" target="_blank" rel="noopener"><span class="nd">1분 전</span>앤트로픽 IPO 신청에 &#x27;S7&#x27; 상승…SK스퀘어 10%대 급등</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432466" target="_blank" rel="noopener"><span class="nd">1분 전</span>&#x27;앤트로픽 훈풍&#x27; 코스피 5600 탈환…내일 SK하이닉스 실적 고비</a><a class="fresh" href="https://n.news.naver.com/mnews/article/016/0002715101" target="_blank" rel="noopener"><span class="nd">1분 전</span>앤트로픽 IPO 훈풍에 코스피 3% 급등…매수 사이드카 발동 [투자360]</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/030/0003479459" target="_blank" rel="noopener"><span class="nd">1분 전</span>[ET특징주]빛과전자, 美 광트랜시버 초도 양산 수주에 상승세</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432717" target="_blank" rel="noopener"><span class="nd">1분 전</span>빛과전자, 16%대 급등…美 광통신사 공급 계약</a><a class="fresh" href="https://www.ppss.kr/news/articleView.html?idxno=317848" target="_blank" rel="noopener"><span class="nd">12분 전</span>[오늘의 특징주] 케이아이엔엑스·지니언스 상한가…공개매수 가격 인상...</a><a class="fresh" href="https://www.bigtanews.co.kr/article/view/big202610280019" target="_blank" rel="noopener"><span class="nd">41분 전</span>[오늘의 특징주] 10월 28일</a></div></details>
  </div>
- <div class="g"><b>+6.8%</b><i class="tr"><em style="width:45.1%"></em></i></div>
- <div class="r"><div class="p">828,000</div></div>
+ <div class="g"><b>+11.5%</b><i class="tr"><em style="width:76.4%"></em></i></div>
+ <div class="r"><div class="p">4,195</div></div>
 </div>
-<div class="row" data-score="4" data-nxt="1">
+<div class="row hot" data-score="3" data-nxt="1">
  <div class="l">
-  <div class="nm">JYP Ent.<span class="cd">035900</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">792억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="nm">한양디지텍<span class="cd">078350</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">350억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">반도체 재료/부품(2)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/009/0005754909" target="_blank" rel="noopener"><span class="nd">1분 전</span>JYP 지분 인수 추진 발표에 주가 ‘들썩’…금감원 “불공정거래 예의...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009253441" target="_blank" rel="noopener"><span class="nd">1분 전</span>JYP 인수 선언 넥스록 &#x27;의문투성이&#x27;…금감원 &amp;quot;이익 본 계좌 살펴볼 것...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/215/0001270665" target="_blank" rel="noopener"><span class="nd">1분 전</span>日 투자사 인수설 부인에도..JYP, 6%대 상승 마감</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2시간 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://www.pinpointnews.co.kr/news/articleView.html?idxno=499327" target="_blank" rel="noopener"><span class="nd">2시간 전</span>반도체 재료 부품 테마에 번진 매수세, 실적도 따라올까…고객사·매출...</a><a class="fresh" href="http://www.kjdaily.com/article.php?aid=1793102881690492276" target="_blank" rel="noopener"><span class="nd">20시간 전</span>멜콘·나무가·이지트로닉스 상한가…반도체·로봇주 강세</a><a class="fresh" href="https://www.ppss.kr/news/articleView.html?idxno=317466" target="_blank" rel="noopener"><span class="nd">어제</span>[오늘의 특징주] 이지트로닉스·캠시스·대원 상한가...로봇·반도체 관...</a></div></details>
  </div>
- <div class="g"><b>+6.5%</b><i class="tr"><em style="width:43.5%"></em></i></div>
- <div class="r"><div class="p">38,450</div></div>
+ <div class="g"><b>+8.5%</b><i class="tr"><em style="width:57.0%"></em></i></div>
+ <div class="r"><div class="p">41,000</div></div>
+</div>
+<div class="row hot" data-score="4" data-nxt="0">
+ <div class="l">
+  <div class="nm">멜콘<span class="cd">179880</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">4,511억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">2026 하반기 신규상장(3) · 반도체 장비(5)</span></div>
+  
+  
+ </div>
+ <div class="g"><b>+8.5%</b><i class="tr"><em style="width:56.4%"></em></i></div>
+ <div class="r"><div class="p">19,210</div></div>
+</div>
+<div class="row hot" data-score="2" data-nxt="1">
+ <div class="l">
+  <div class="nm">ISC<span class="cd">095340</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">449억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(5) · HBM(고대역폭메모리)(4)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1시간 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://www.mt.co.kr/stock/2026/10/28/2026102815421930994" target="_blank" rel="noopener"><span class="nd">1시간 전</span>코스피 10거래일 만에 6000선 탈환…하닉 실적·주주환원 확대</a><a class="fresh" href="https://www.pinpointnews.co.kr/news/articleView.html?idxno=499327" target="_blank" rel="noopener"><span class="nd">2시간 전</span>반도체 재료 부품 테마에 번진 매수세, 실적도 따라올까…고객사·매출...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/003/0014280149" target="_blank" rel="noopener"><span class="nd">어제</span>ISC, 3분기 영업익 218억…전년比 25%↑</a></div></details>
+ </div>
+ <div class="g"><b>+8.4%</b><i class="tr"><em style="width:56.0%"></em></i></div>
+ <div class="r"><div class="p">165,900</div></div>
 </div>
 <div class="row" data-score="2" data-nxt="0">
  <div class="l">
-  <div class="nm">엑시콘<span class="cd">092870</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">331억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">CXL(컴퓨트익스프레스링크)(3) · 반도체 장비(2)</span></div>
+  <div class="nm">엘리스<span class="cd">0158S0</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,344억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">2026 하반기 신규상장(3) · 클라우드 컴퓨팅(2)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2시간 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://www.bigtanews.co.kr/article/view/big202610270020" target="_blank" rel="noopener"><span class="nd">2시간 전</span>[오늘의 특징주] 10월 27일</a><a class="fresh" href="https://www.ppss.kr/news/articleView.html?idxno=317466" target="_blank" rel="noopener"><span class="nd">7시간 전</span>[오늘의 특징주] 이지트로닉스·캠시스·대원 상한가...로봇·반도체 관...</a><a class="fresh" href="https://www.pinpointnews.co.kr/news/articleView.html?idxno=498783" target="_blank" rel="noopener"><span class="nd">9시간 전</span>SK하이닉스 주가 신바람…반도체 장비주로 번진 AI 투자 열기</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">39분 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://isplus.com/article/view/isp202610280227" target="_blank" rel="noopener"><span class="nd">39분 전</span>롯데건설, 1542가구 ‘화성 향남 롯데캐슬 시그니처’ 공급…11월 3일 1순...</a></div></details>
  </div>
- <div class="g"><b>+6.2%</b><i class="tr"><em style="width:41.4%"></em></i></div>
- <div class="r"><div class="p">58,000</div></div>
+ <div class="g"><b>+6.9%</b><i class="tr"><em style="width:46.3%"></em></i></div>
+ <div class="r"><div class="p">80,600</div></div>
 </div>
-<div class="row" data-score="7" data-nxt="0">
+<div class="row" data-score="10" data-nxt="0">
  <div class="l">
-  <div class="nm">RF머트리얼즈<span class="cd">327260</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,197억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="nm">빛샘전자<span class="cd">072950</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">966억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">광통신(광케이블/광섬유 등)(4) · 통신장비(4)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2시간 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://www.bigtanews.co.kr/article/view/big202610270020" target="_blank" rel="noopener"><span class="nd">2시간 전</span>[오늘의 특징주] 10월 27일</a><a class="fresh" href="https://n.news.naver.com/mnews/article/014/0005594229" target="_blank" rel="noopener"><span class="nd">어제</span>&amp;quot;RF머트리얼즈, 성장 가속화…목표가 6만5000원 상향&amp;quot;</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">4시간 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="http://www.kjdaily.com/article.php?aid=1793161155690555276" target="_blank" rel="noopener"><span class="nd">4시간 전</span>지니언스·케이아이엔엑스·피앤에스로보틱스 상한가…20% 이상 상승 12개</a></div></details>
  </div>
- <div class="g"><b>+6.2%</b><i class="tr"><em style="width:41.1%"></em></i></div>
- <div class="r"><div class="p">34,750</div></div>
+ <div class="g"><b>+6.6%</b><i class="tr"><em style="width:44.1%"></em></i></div>
+ <div class="r"><div class="p">15,650</div></div>
 </div>
-<div class="row" data-score="1" data-nxt="1">
+<div class="row" data-score="2" data-nxt="1">
  <div class="l">
-  <div class="nm">SK<span class="cd">034730</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,023억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">수소에너지(수소차/연료전지 등)(2) · 밸류업(24년 기업가치 제고계획 발표)(3)</span></div>
-  
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 8건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/015/0005347194" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK이노, 독거노인 돌봄 종사자 격려 지원</a><a class="fresh" href="https://n.news.naver.com/mnews/article/003/0014281969" target="_blank" rel="noopener"><span class="nd">1분 전</span>앤트로픽發 훈풍…삼성전자 4%·SK하닉 5% 상승 마감[핫스탁](종합)</a><a class="fresh" href="https://n.news.naver.com/mnews/article/029/0003055558" target="_blank" rel="noopener"><span class="nd">1분 전</span>“땡큐 앤트로픽”… 삼전 4%·SK하닉 5% 폭등에 코스피 ‘활짝’</a><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009252675" target="_blank" rel="noopener"><span class="nd">1분 전</span>&#x27;역대급 수익에도 주가 반토막&#x27;…삼성·SK, 주주환원 승부수 &#x27;주목&#x27;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675551" target="_blank" rel="noopener"><span class="nd">1분 전</span>AI 반등장서 삼성전기·삼성전자 담은 ‘상위 1%’…SK하닉은 순매도...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/092/0002442537" target="_blank" rel="noopener"><span class="nd">1분 전</span>[유미&#x27;s 픽] &#x27;AI 재앙&#x27; 경고한 앤트로픽, 삼성·SK HBM 의존 안고 상장...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432169" target="_blank" rel="noopener"><span class="nd">1분 전</span>지친 독거노인 돌봄 종사자들, SK이노베이션이 재충전 돕는다</a><a class="fresh" href="https://n.news.naver.com/mnews/article/003/0014280667" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하닉, 사상최대 주주환원하나…SK 9%↑ SK스퀘어 12%↑</a></div></details>
- </div>
- <div class="g"><b>+6.1%</b><i class="tr"><em style="width:40.8%"></em></i></div>
- <div class="r"><div class="p">497,500</div></div>
-</div>
-<div class="row" data-score="6" data-nxt="1">
- <div class="l">
-  <div class="nm">비나텍<span class="cd">126340</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">263억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">수소에너지(수소차/연료전지 등)(2)</span></div>
+  <div class="nm">디아이<span class="cd">003160</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">841억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">HBM(고대역폭메모리)(4) · 시스템반도체(2)</span></div>
   
   
  </div>
- <div class="g"><b>+6.1%</b><i class="tr"><em style="width:40.7%"></em></i></div>
- <div class="r"><div class="p">109,100</div></div>
+ <div class="g"><b>+6.3%</b><i class="tr"><em style="width:42.3%"></em></i></div>
+ <div class="r"><div class="p">43,300</div></div>
 </div>
 <div class="row" data-score="4" data-nxt="1">
  <div class="l">
   <div class="nm">코리아써키트<span class="cd">007810</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">719억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(4) · CXL(컴퓨트익스프레스링크)(3)</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">676억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(5) · CXL(컴퓨트익스프레스링크)(3)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">20시간 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="http://www.kjdaily.com/article.php?aid=1793102881690492276" target="_blank" rel="noopener"><span class="nd">20시간 전</span>멜콘·나무가·이지트로닉스 상한가…반도체·로봇주 강세</a></div></details>
+ </div>
+ <div class="g"><b>+6.2%</b><i class="tr"><em style="width:41.6%"></em></i></div>
+ <div class="r"><div class="p">80,300</div></div>
+</div>
+<div class="row" data-score="6" data-nxt="1">
+ <div class="l">
+  <div class="nm">피에스케이홀딩스<span class="cd">031980</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">603억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">HBM(고대역폭메모리)(4) · 밸류업(25년 기업가치 제고계획 발표)(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432698" target="_blank" rel="noopener"><span class="nd">1분 전</span>미국 반도체 훈풍+SK하이닉스 호실적...5800피 회복</a><a class="fresh" href="https://www.businesskorea.co.kr/news/articleView.html?idxno=279900" target="_blank" rel="noopener"><span class="nd">45분 전</span>[마감 시황] 코스피, SK하이닉스 역대급 실적 촉매로 6% 폭등...10거래일...</a></div></details>
+ </div>
+ <div class="g"><b>+5.9%</b><i class="tr"><em style="width:39.4%"></em></i></div>
+ <div class="r"><div class="p">193,000</div></div>
+</div>
+<div class="row" data-score="8" data-nxt="0">
+ <div class="l">
+  <div class="nm">엑스게이트<span class="cd">356680</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,025억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">보안주(정보)(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/138/0002246379" target="_blank" rel="noopener"><span class="nd">1분 전</span>연이은 해킹에 보안주 급등…안랩·지니언스·엑스게이트 웃었다</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004676094" target="_blank" rel="noopener"><span class="nd">1분 전</span>증권가까지 번진 금융권 해킹…투자자는 보안주 매수 [줍줍 리포트]</a></div></details>
+ </div>
+ <div class="g"><b>+5.7%</b><i class="tr"><em style="width:38.2%"></em></i></div>
+ <div class="r"><div class="p">17,110</div></div>
+</div>
+<div class="row" data-score="4" data-nxt="0">
+ <div class="l">
+  <div class="nm">액스비스<span class="cd">0011A0</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">350억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">카메라모듈/부품(2)</span></div>
   
   
  </div>
- <div class="g"><b>+5.9%</b><i class="tr"><em style="width:39.2%"></em></i></div>
- <div class="r"><div class="p">75,300</div></div>
+ <div class="g"><b>+5.7%</b><i class="tr"><em style="width:38.0%"></em></i></div>
+ <div class="r"><div class="p">10,200</div></div>
+</div>
+<div class="row" data-score="2" data-nxt="1">
+ <div class="l">
+  <div class="nm">RFHIC<span class="cd">218410</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">409억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">광통신(광케이블/광섬유 등)(4) · 통신장비(4)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001200773" target="_blank" rel="noopener"><span class="nd">1분 전</span>신한證 “RFHIC, 2~3년 고성장 담보…주가가 실적 따라갈 것”</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397566" target="_blank" rel="noopener"><span class="nd">1분 전</span>“주가 빠질 때 사라?”…RFHIC, 증권사가 53% 상승 본 이유</a><a class="fresh" href="https://www.mt.co.kr/stock/2026/10/28/2026102809321295340" target="_blank" rel="noopener"><span class="nd">8시간 전</span>빛과전자, 16%대 급등…美 광통신사 공급 계약</a><a class="fresh" href="https://n.news.naver.com/mnews/article/277/0005834041" target="_blank" rel="noopener"><span class="nd">어제</span>RFHIC, 3분기 영업이익 217억원…전년比 194%↑</a></div></details>
+ </div>
+ <div class="g"><b>+5.7%</b><i class="tr"><em style="width:37.7%"></em></i></div>
+ <div class="r"><div class="p">51,500</div></div>
+</div>
+<div class="row" data-score="6" data-nxt="0">
+ <div class="l">
+  <div class="nm">엑시콘<span class="cd">092870</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">544억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">CXL(컴퓨트익스프레스링크)(3) · 반도체 장비(5)</span></div>
+  <div class="als"><a class="al al-w" href="https://m.stock.naver.com/domestic/stock/092870/management/disclosure" target="_blank" rel="noopener" title="(주)엑시콘 [투자주의]투자경고종목 지정해제 및 재지정 예고"><b>투자경고</b><i>10/27</i></a></div>
+  
+ </div>
+ <div class="g"><b>+5.5%</b><i class="tr"><em style="width:36.8%"></em></i></div>
+ <div class="r"><div class="p">67,000</div></div>
+</div>
+<div class="row" data-score="1" data-nxt="1">
+ <div class="l">
+  <div class="nm">HD현대마린솔루션<span class="cd">443060</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">357억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">밸류업(24년 기업가치 제고계획 발표)(5)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 5건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/009/0005755431" target="_blank" rel="noopener"><span class="nd">1분 전</span>HD현대 영업익 3조 육박…계열사 일동 &#x27;실적축포&#x27;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/374/0000540332" target="_blank" rel="noopener"><span class="nd">1분 전</span>작년 실적 추월 HD한국조선해양…3분기 누적 영업익 4.4조</a><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001200481" target="_blank" rel="noopener"><span class="nd">어제</span>신한證 “HD현대마린솔루션, 3분기 일회성에 주춤… 쌓이는 이익 구조...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009251551" target="_blank" rel="noopener"><span class="nd">어제</span>NH證 &amp;quot;HD현대마린솔루션, 영업이익률 26%…기업 가치 저평가&amp;quot;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016401876" target="_blank" rel="noopener"><span class="nd">어제</span>하나증권 &amp;quot;HD현대마린솔루션, 환율 하락에 실적 부진&amp;quot;…목표가↓</a></div></details>
+ </div>
+ <div class="g"><b>+5.3%</b><i class="tr"><em style="width:35.1%"></em></i></div>
+ <div class="r"><div class="p">174,800</div></div>
+</div>
+<div class="grp">1일 전<span class="gn">9개</span></div>
+<div class="row hot" data-score="9" data-nxt="1">
+ <div class="l">
+  <div class="nm">티에프이<span class="cd">425420</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">378억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(5) · 반도체 장비(5)</span></div>
+  
+  
+ </div>
+ <div class="g"><b>+8.1%</b><i class="tr"><em style="width:54.2%"></em></i></div>
+ <div class="r"><div class="p">84,700</div></div>
+</div>
+<div class="row" data-score="1" data-nxt="1">
+ <div class="l">
+  <div class="nm">SK스퀘어<span class="cd">402340</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">6,874억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">S7(삼성전자/SK하이닉스 등)(2) · 밸류업(25년 기업가치 제고계획 발표)(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/648/0000052032" target="_blank" rel="noopener"><span class="nd">1분 전</span>실적에 반박당한 메모리 정점론...삼전닉스 급등에 코스피 6000 탈환</a><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001200925" target="_blank" rel="noopener"><span class="nd">1분 전</span>실적보다 강했던 ‘2030년 청사진’… SK하이닉스, ‘AI 고점론’ 잠재...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397893" target="_blank" rel="noopener"><span class="nd">1분 전</span>역대급 실적에 주주환원까지…반도체 투심 회복에 삼전닉스 7~8%↑[특...</a></div></details>
+ </div>
+ <div class="g"><b>+6.8%</b><i class="tr"><em style="width:45.1%"></em></i></div>
+ <div class="r"><div class="p">921,000</div></div>
+</div>
+<div class="row" data-score="4" data-nxt="1">
+ <div class="l">
+  <div class="nm">JYP Ent.<span class="cd">035900</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">791억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="als"><a class="al al-h" href="https://m.stock.naver.com/domestic/stock/035900/management/disclosure" target="_blank" rel="noopener" title="(주)제이와이피엔터테인먼트 공매도 과열종목 지정(공매도 거래 금지 적용)"><b>과열종목</b><i>10/27</i></a></div>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009254133" target="_blank" rel="noopener"><span class="nd">1분 전</span>박진영 없는 JYP &#x27;너무 쉽다&#x27;…&#x27;지분 15%&#x27; 적대적 M&amp;amp;A &#x27;먹잇감&#x27;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/023/0004006290" target="_blank" rel="noopener"><span class="nd">1분 전</span>일본계 투자그룹, JYP 지분 최대 50% 공개매수 추진</a><a class="fresh" href="https://n.news.naver.com/mnews/article/005/0001881296" target="_blank" rel="noopener"><span class="nd">1분 전</span>JYP 인수하겠다던 넥스록, 법인 없이 실체도 불분명</a></div></details>
+ </div>
+ <div class="g"><b>+6.5%</b><i class="tr"><em style="width:43.5%"></em></i></div>
+ <div class="r"><div class="p">40,050</div></div>
+</div>
+<div class="row" data-score="7" data-nxt="0">
+ <div class="l">
+  <div class="nm">RF머트리얼즈<span class="cd">327260</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">1,205억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">광통신(광케이블/광섬유 등)(4) · 통신장비(4)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2일 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/014/0005594229" target="_blank" rel="noopener"><span class="nd">2일 전</span>&amp;quot;RF머트리얼즈, 성장 가속화…목표가 6만5000원 상향&amp;quot;</a></div></details>
+ </div>
+ <div class="g"><b>+6.2%</b><i class="tr"><em style="width:41.1%"></em></i></div>
+ <div class="r"><div class="p">34,800</div></div>
+</div>
+<div class="row" data-score="1" data-nxt="1">
+ <div class="l">
+  <div class="nm">SK<span class="cd">034730</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">961억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">클라우드 컴퓨팅(2) · 수소에너지(수소차/연료전지 등)(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 8건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/076/0004460503" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK에코플랜트 머티리얼즈-후루카와전공, 반도체 소재 사업 협력 맞손</a><a class="fresh" href="https://n.news.naver.com/mnews/article/293/0000092313" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK이노·SKIET, 소규모합병 유지…외부평가에도 비율 그대로</a><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009256272" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하닉 &#x27;깜짝 실적&#x27;에 증권가 눈높이↑…&amp;quot;100조 환원 주가 안전판&amp;quot;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/020/0003758373" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하닉 100조 규모 주주환원…주가 하루새 10.89% 올라</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004676159" target="_blank" rel="noopener"><span class="nd">1분 전</span>SKC, 3분기 영업손실 496억…전 분기 대비 적자 폭 감소</a><a class="fresh" href="https://n.news.naver.com/mnews/article/029/0003055845" target="_blank" rel="noopener"><span class="nd">1분 전</span>삼전·SK하닉 나란히 불기둥…반도체株 바닥 찍고 반등 궤도 올랐다</a><a class="fresh" href="https://n.news.naver.com/mnews/article/037/0000039052" target="_blank" rel="noopener"><span class="nd">1분 전</span>역대 최대 83조 분기 영업이익 SK하닉, AI 산업 수익성 우려 날릴까</a><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009256120" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하닉 &#x27;역대급 실적·환원&#x27;에 11% 급등…삼전도 9%↑[핫종목](종합)</a></div></details>
+ </div>
+ <div class="g"><b>+6.1%</b><i class="tr"><em style="width:40.8%"></em></i></div>
+ <div class="r"><div class="p">540,000</div></div>
+</div>
+<div class="row" data-score="6" data-nxt="1">
+ <div class="l">
+  <div class="nm">비나텍<span class="cd">126340</span><span class="nxt">NXT</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">265억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">수소에너지(수소차/연료전지 등)(2)</span></div>
+  
+  
+ </div>
+ <div class="g"><b>+6.1%</b><i class="tr"><em style="width:40.7%"></em></i></div>
+ <div class="r"><div class="p">109,200</div></div>
 </div>
 <div class="row" data-score="1" data-nxt="1">
  <div class="l">
   <div class="nm">SK하이닉스<span class="cd">000660</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">43,441억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">S7(삼성전자/SK하이닉스 등)(2) · 소캠(SOCAMM)(4)</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">42,060억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">S7(삼성전자/SK하이닉스 등)(2) · 소캠(SOCAMM)(5)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432466" target="_blank" rel="noopener"><span class="nd">1분 전</span>&#x27;앤트로픽 훈풍&#x27; 코스피 5600 탈환…내일 SK하이닉스 실적 고비</a><a class="fresh" href="https://n.news.naver.com/mnews/article/028/0002829469" target="_blank" rel="noopener"><span class="nd">1분 전</span>앤트로픽, 역대 최대 IPO 쏘아올려…AI 투자 열풍 시험대</a><a class="fresh" href="https://n.news.naver.com/mnews/article/009/0005754900" target="_blank" rel="noopener"><span class="nd">1분 전</span>&amp;quot;이익 눈높이 높아진 삼전닉스…빅테크 실적에 주가향방 달려&amp;quot;</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 8건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006398269" target="_blank" rel="noopener"><span class="nd">1분 전</span>3년치 HBM 완판…&#x27;AI 고점론’ 지운 SK하이닉스</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006398266" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하이닉스·NC문화재단, ‘디지털 ESG 협의체’ 합류</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005433151" target="_blank" rel="noopener"><span class="nd">1분 전</span>솔리다임 IPO 접은 SK하이닉스…1100조 투자에 美공장까지 과제 산적</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004676189" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하이닉스 “D램·HBM 3년치 완판”</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005433140" target="_blank" rel="noopener"><span class="nd">1분 전</span>이익률 80% 찍고 향후 3년 물량 완판…SK하이닉스의 자신감</a><a class="fresh" href="https://n.news.naver.com/mnews/article/422/0000920442" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하이닉스 올해 100조 푼다…삼성전자 주주환원도 주목</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005433126" target="_blank" rel="noopener"><span class="nd">1분 전</span>[단독] &amp;quot;SK하이닉스 강남사옥?&amp;quot;…서울시, 르메르디앙 부지 사전협상 재...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/056/0012282617" target="_blank" rel="noopener"><span class="nd">1분 전</span>SK하이닉스 3분기 영업이익 83조…“60조 추가 주주환원”</a></div></details>
  </div>
  <div class="g"><b>+5.6%</b><i class="tr"><em style="width:37.1%"></em></i></div>
- <div class="r"><div class="p">1,341,000</div></div>
+ <div class="r"><div class="p">1,487,000</div></div>
 </div>
 <div class="row" data-score="2" data-nxt="1">
  <div class="l">
   <div class="nm">심텍<span class="cd">222800</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,231억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(4) · 반도체 기판(FC-BGA/PCB/MLB 등)(2)</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">1,227억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">소캠(SOCAMM)(5) · 반도체 기판(FC-BGA/PCB/MLB 등)(2)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675481" target="_blank" rel="noopener"><span class="nd">1분 전</span>美 AI 훈풍 소부장까지 번졌다…심텍 15%·주성엔지니어링 8%↑[이런국...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016403685" target="_blank" rel="noopener"><span class="nd">1분 전</span>[특징주] 반도체주, 앤트로픽 훈풍에 급등…삼전·닉스 4∼5%대↑(종합...</a><a class="fresh" href="https://www.mt.co.kr/stock/2026/10/27/2026102716110627181" target="_blank" rel="noopener"><span class="nd">2시간 전</span>&#x27;앤트로픽 훈풍&#x27; 코스피 5600 탈환…내일 SK하이닉스 실적 고비</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397893" target="_blank" rel="noopener"><span class="nd">1분 전</span>역대급 실적에 주주환원까지…반도체 투심 회복에 삼전닉스 7~8%↑[특...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675481" target="_blank" rel="noopener"><span class="nd">어제</span>美 AI 훈풍 소부장까지 번졌다…심텍 15%·주성엔지니어링 8%↑[이런국...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016403685" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] 반도체주, 앤트로픽 훈풍에 급등…삼전·닉스 4∼5%대↑(종합...</a></div></details>
  </div>
  <div class="g"><b>+5.5%</b><i class="tr"><em style="width:36.7%"></em></i></div>
- <div class="r"><div class="p">117,200</div></div>
+ <div class="r"><div class="p">127,500</div></div>
 </div>
 <div class="row" data-score="5" data-nxt="0">
  <div class="l">
   <div class="nm">빅웨이브로보틱스<span class="cd">0035S0</span></div>
-  <div class="chips"><span class="chip">오늘</span><span class="chip v">1,430억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">피지컬 AI/휴머노이드 로봇(2) · 로봇(산업용/협동로봇 등)(3)</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">1,444억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">2026 하반기 신규상장(3) · 피지컬 AI/휴머노이드 로봇(2)</span></div>
   
   
  </div>
  <div class="g"><b>+5.2%</b><i class="tr"><em style="width:34.5%"></em></i></div>
- <div class="r"><div class="p">28,650</div></div>
+ <div class="r"><div class="p">29,450</div></div>
 </div>
-<div class="grp">1일 전<span class="gn">6개</span></div>
+<div class="grp">2일 전<span class="gn">6개</span></div>
 <div class="row hot" data-score="3" data-nxt="0">
  <div class="l">
   <div class="nm">진양산업<span class="cd">003780</span></div>
-  <div class="chips"><span class="chip">1일 전</span><span class="chip v">422억</span><span class="chip">KOSPI</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">422억</span><span class="chip">KOSPI</span></div>
   <div class="als"><a class="al al-h" href="https://m.stock.naver.com/domestic/stock/003780/management/disclosure" target="_blank" rel="noopener" title="진양산업(주) (예고)단기과열종목 지정예고"><b>단기과열</b><i>10/26</i></a></div>
   
  </div>
  <div class="g"><b>+13.8%</b><i class="tr"><em style="width:92.3%"></em></i></div>
- <div class="r"><div class="p">5,390</div></div>
+ <div class="r"><div class="p">5,620</div></div>
 </div>
 <div class="row hot" data-score="3" data-nxt="1">
  <div class="l">
   <div class="nm">루닛<span class="cd">328130</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">1일 전</span><span class="chip v">615억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">615억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675414" target="_blank" rel="noopener"><span class="nd">1분 전</span>美 항암신약 연구 합류한 루닛, 몸값 재평가되나 [코주부]</a><a class="fresh" href="https://n.news.naver.com/mnews/article/031/0001069358" target="_blank" rel="noopener"><span class="nd">어제</span>루닛, 美 바이오 기업과 AI 바이오마커 발굴 협력</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016401067" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] 루닛, &#x27;美 바이오기업과 협업&#x27;에 상한가 마감(종합)</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675059" target="_blank" rel="noopener"><span class="nd">어제</span>루닛, AI진단 넘어 신약개발로…사업가치 최소 5000억 [Why 바이오]</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 6건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397544" target="_blank" rel="noopener"><span class="nd">1분 전</span>[ESMO 2026]임유주 루닛 메디컬디렉터 “AI로 암종별 데이터 발굴...신...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397541" target="_blank" rel="noopener"><span class="nd">1분 전</span>루닛이 끌어올린 의료AI…뷰노 평가·뉴로핏 빅파마 계약 주목[바이오...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675414" target="_blank" rel="noopener"><span class="nd">어제</span>美 항암신약 연구 합류한 루닛, 몸값 재평가되나 [코주부]</a><a class="fresh" href="https://n.news.naver.com/mnews/article/031/0001069358" target="_blank" rel="noopener"><span class="nd">2일 전</span>루닛, 美 바이오 기업과 AI 바이오마커 발굴 협력</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016401067" target="_blank" rel="noopener"><span class="nd">2일 전</span>[특징주] 루닛, &#x27;美 바이오기업과 협업&#x27;에 상한가 마감(종합)</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004675059" target="_blank" rel="noopener"><span class="nd">2일 전</span>루닛, AI진단 넘어 신약개발로…사업가치 최소 5000억 [Why 바이오]</a></div></details>
  </div>
  <div class="g"><b>+10.2%</b><i class="tr"><em style="width:67.8%"></em></i></div>
- <div class="r"><div class="p">14,650</div></div>
+ <div class="r"><div class="p">14,390</div></div>
 </div>
 <div class="row hot" data-score="4" data-nxt="0">
  <div class="l">
   <div class="nm">컨텍<span class="cd">451760</span></div>
-  <div class="chips"><span class="chip">1일 전</span><span class="chip v">678억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">678억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
   <div class="als"><a class="al al-w" href="https://m.stock.naver.com/domestic/stock/451760/management/disclosure" target="_blank" rel="noopener" title="(주)컨텍 [투자주의]투자경고종목 지정예고"><b>투자경고</b><i>10/26</i></a></div>
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397092" target="_blank" rel="noopener"><span class="nd">1분 전</span>컨텍, 美 태양관측위성 데이터 수신 위한 9m 안테나 핵심기술 개발</a><a class="fresh" href="https://n.news.naver.com/mnews/article/215/0001270591" target="_blank" rel="noopener"><span class="nd">1분 전</span>컨텍 이성희 대표, 카자흐 글로벌 투자 라운드테이블서 첨단산업 협력</a><a class="fresh" href="https://n.news.naver.com/mnews/article/092/0002442379" target="_blank" rel="noopener"><span class="nd">어제</span>컨텍, 누리호 5차 위성 6기 양방향 송수신 등 &#x27;관제 미션 클리어&#x27; 선언</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">어제 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006397092" target="_blank" rel="noopener"><span class="nd">어제</span>컨텍, 美 태양관측위성 데이터 수신 위한 9m 안테나 핵심기술 개발</a><a class="fresh" href="https://n.news.naver.com/mnews/article/215/0001270591" target="_blank" rel="noopener"><span class="nd">어제</span>컨텍 이성희 대표, 카자흐 글로벌 투자 라운드테이블서 첨단산업 협력</a><a class="fresh" href="https://n.news.naver.com/mnews/article/092/0002442379" target="_blank" rel="noopener"><span class="nd">2일 전</span>컨텍, 누리호 5차 위성 6기 양방향 송수신 등 &#x27;관제 미션 클리어&#x27; 선언</a></div></details>
  </div>
  <div class="g"><b>+8.7%</b><i class="tr"><em style="width:58.2%"></em></i></div>
- <div class="r"><div class="p">10,350</div></div>
+ <div class="r"><div class="p">10,580</div></div>
 </div>
 <div class="row hot" data-score="2" data-nxt="0">
  <div class="l">
   <div class="nm">앤로보틱스<span class="cd">138360</span></div>
-  <div class="chips"><span class="chip">1일 전</span><span class="chip v">672억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">로봇(산업용/협동로봇 등)(3)</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">672억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">로봇(산업용/협동로봇 등)(4)</span></div>
   
   
  </div>
  <div class="g"><b>+8.0%</b><i class="tr"><em style="width:53.5%"></em></i></div>
- <div class="r"><div class="p">2,170</div></div>
+ <div class="r"><div class="p">2,100</div></div>
 </div>
 <div class="row" data-score="7" data-nxt="0">
  <div class="l">
   <div class="nm">샌즈랩<span class="cd">411080</span></div>
-  <div class="chips"><span class="chip">1일 전</span><span class="chip v">429억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">429억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">보안주(정보)(2)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2시간 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://www.bigtanews.co.kr/article/view/big202610270020" target="_blank" rel="noopener"><span class="nd">2시간 전</span>[오늘의 특징주] 10월 27일</a><a class="fresh" href="http://www.kjdaily.com/article.php?aid=1793018466690407276" target="_blank" rel="noopener"><span class="nd">22시간 전</span>루닛·아이씨에이치·뷰노 상한가…주식 상승률 상위권 휩쓸어</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005431451" target="_blank" rel="noopener"><span class="nd">어제</span>美, &#x27;PHP&#x27; 보안 취약점 경고… 보안주 수혜 전망에 샌즈랩 19%대 ↑</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2일 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005431451" target="_blank" rel="noopener"><span class="nd">2일 전</span>美, &#x27;PHP&#x27; 보안 취약점 경고… 보안주 수혜 전망에 샌즈랩 19%대 ↑</a></div></details>
  </div>
  <div class="g"><b>+6.7%</b><i class="tr"><em style="width:44.9%"></em></i></div>
- <div class="r"><div class="p">8,200</div></div>
+ <div class="r"><div class="p">8,750</div></div>
 </div>
 <div class="row" data-score="2" data-nxt="1">
  <div class="l">
   <div class="nm">로보티즈<span class="cd">108490</span><span class="nxt">NXT</span></div>
-  <div class="chips"><span class="chip">1일 전</span><span class="chip v">1,289억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">피지컬 AI/휴머노이드 로봇(2) · 로봇(산업용/협동로봇 등)(3)</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">1,289억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">피지컬 AI/휴머노이드 로봇(2) · 지능형로봇/인공지능(AI)(2)</span></div>
   
-  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432019" target="_blank" rel="noopener"><span class="nd">1분 전</span>&amp;quot;로보티즈, 프랑스 기업 공급계약·CAPA 증설로 성장…목표가 35만원&amp;quot;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/374/0000539999" target="_blank" rel="noopener"><span class="nd">1분 전</span>[시장 따라잡기] 앤트로픽발 AI 투심 급반전…미국주식 투자전략은?</a><a class="fresh" href="https://n.news.naver.com/mnews/article/024/0000109186" target="_blank" rel="noopener"><span class="nd">어제</span>젠슨황이 시연한 로봇 효과...로보티즈 주가 ‘불기둥’</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005431829" target="_blank" rel="noopener"><span class="nd">어제</span>로보틱스·헬스케어만 방긋…삼전닉스 실적 앞두고 &amp;quot;변동성장세 지속...</a></div></details>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009256158" target="_blank" rel="noopener"><span class="nd">1분 전</span>피지컬AI 기대에 로봇주 급등…레인보우 15%·로보티즈 10%↑[핫종목]</a><a class="fresh" href="https://n.news.naver.com/mnews/article/015/0005347410" target="_blank" rel="noopener"><span class="nd">1분 전</span>로봇 설계도까지 연다…로보티즈, 오픈소스로 K-휴머노이드 생태계 구...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005432019" target="_blank" rel="noopener"><span class="nd">어제</span>&amp;quot;로보티즈, 프랑스 기업 공급계약·CAPA 증설로 성장…목표가 35만원&amp;quot;</a><a class="fresh" href="https://n.news.naver.com/mnews/article/024/0000109186" target="_blank" rel="noopener"><span class="nd">2일 전</span>젠슨황이 시연한 로봇 효과...로보티즈 주가 ‘불기둥’</a></div></details>
  </div>
  <div class="g"><b>+5.3%</b><i class="tr"><em style="width:35.6%"></em></i></div>
- <div class="r"><div class="p">251,000</div></div>
+ <div class="r"><div class="p">275,500</div></div>
 </div>
  </div>
  <div class="foot">
@@ -321,7 +452,7 @@ padding:16px 20px;transition:.16s ease}
 <script>
 (function(){
   var fn=document.getElementById('filtnxt');
-  if(fn){var on=false;fn.addEventListener('click',function(){on=!on;fn.classList.toggle('on',on);document.querySelectorAll('.row').forEach(function(r){if(!on){r.style.display='';return;}r.style.display=r.getAttribute('data-nxt')==='1'?'':'none';});});}
+  if(fn){var on=false;fn.addEventListener('click',function(){on=!on;fn.classList.toggle('on',on);document.querySelectorAll('.list > .row').forEach(function(r){if(!on){r.style.display='';return;}r.style.display=r.getAttribute('data-nxt')==='1'?'':'none';});});}
 
  var b=document.getElementById('upd'); if(!b) return;
  var host=location.hostname;
