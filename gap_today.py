@@ -120,7 +120,7 @@ def apply_scores(rows):
         r["rec"] = p
         r["score"] = int(round(W_REC * p + W_MAT * mat))
 
-CARD = """<div class="row{hot}" data-score="{ts}" data-nxt="{nxtf}">
+CARD = """<div class="row{hot}" data-score="{ts}" data-nxt="{nxtf}" data-val="{val}">
  <div class="l">
   <div class="nm">{name}<span class="cd">{code}</span>{nxt}</div>
   <div class="chips"><span class="chip">{since}</span><span class="chip v">{val}억</span><span class="chip">{mkt}</span>{theme}</div>
@@ -148,6 +148,7 @@ font-family:"Pretendard Variable",Pretendard,"Malgun Gothic","맑은 고딕",sys
 .upd{color:#5d6b8c;font-size:12.5px}
 .tools{display:flex;align-items:center;gap:12px}
 button#filtnxt{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#161e33;border:1px solid #28355e;border-radius:10px;padding:7px 12px;cursor:pointer}button#filtnxt.on{color:#fff;background:#263a7a;border-color:#3a56b8}
+button#sortval{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#161e33;border:1px solid #28355e;border-radius:10px;padding:7px 12px;cursor:pointer}button#sortval.on{color:#fff;background:#263a7a;border-color:#3a56b8}
 button#upd{font:inherit;font-size:13px;font-weight:700;color:#dbe6ff;background:#1a2740;border:1px solid #2c3d63;border-radius:10px;padding:8px 15px;cursor:pointer;transition:.15s ease}
 button#upd:hover{background:#22325a;border-color:#3c5488}
 button#upd:disabled{opacity:.7;cursor:default}
@@ -326,7 +327,7 @@ padding:16px 20px;transition:.16s ease}
   sb.addEventListener('click',function(){
    var st=saveOpen();
    if(!byScore){
-     cards.slice().sort(function(a,b){return (parseFloat(b.getAttribute('data-score'))||0)-(parseFloat(a.getAttribute('data-score'))||0);}).forEach(function(el){wrap.appendChild(el);});
+     function applySort(){var mode=localStorage.getItem('gap_sort')||'score';cards.slice().sort(function(a,b){if(mode==='val'){var av=parseFloat(a.getAttribute('data-val'))||0,bv=parseFloat(b.getAttribute('data-val'))||0;return bv-av;}return (parseFloat(b.getAttribute('data-score'))||0)-(parseFloat(a.getAttribute('data-score'))||0);}).forEach(function(el){wrap.appendChild(el);});var sv=document.getElementById('sortval');if(sv){sv.classList.toggle('on',mode==='val');sv.textContent=mode==='val'?'점수순':'거래대금순';}}applySort();var sv2=document.getElementById('sortval');if(sv2){sv2.addEventListener('click',function(){var m=localStorage.getItem('gap_sort')||'score';localStorage.setItem('gap_sort',m==='val'?'score':'val');applySort();});}
      grps.forEach(function(g){g.style.display='none';});
      sb.innerHTML='&#8645; \ucd5c\uc2e0\uc21c'; byScore=true;
    } else {
