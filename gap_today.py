@@ -260,7 +260,7 @@ padding:16px 20px;transition:.16s ease}
 <body><div class="wrap">
  <div class="top">
   <div class="brand">GAP<i>&middot;</i>SCAN <span>전종목 스캐너</span></div>
-   <div class="tools"><span class="upd">데이터 {when} (KST)</span><button id="filtnxt" type="button">NXT만</button><button id="sort" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
+   <div class="tools"><span class="upd">데이터 {when} (KST)</span><button id="filtnxt" type="button">NXT만</button><button id="sortval" type="button">&#8645; 내일순</button><button id="upd" type="button">&#8635; 업데이트</button></div> </div>
  {warn}
  <div class="hero">
   <h1>갭 <em>5%</em> 이상</h1>
