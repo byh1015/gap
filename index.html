@@ -12,7 +12,6 @@ button{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#1
 button.active{color:#fff;border-color:#5b8bff}
 .list{display:flex;flex-direction:column;gap:8px;padding:12px 16px}
 .row{display:flex;gap:12px;align-items:center;background:#12182a;border:1px solid #20284a;padding:10px 12px;border-radius:10px}
-.row.hide{display:none}
 .meta{display:flex;gap:8px;align-items:center}
 .name{font-weight:700}
 .sub{color:#9aa3c7;font-size:12px}
@@ -35,10 +34,9 @@ function render(){
   const list=document.getElementById('list');
   list.innerHTML='';
   let items=[...data];
-  const snxt=localStorage.getItem('gap_nxt')==='1';
-  if(snxt){items=items.filter(x=>x.nxt);}
-  const sval=localStorage.getItem('gap_sort')==='val';
-  if(sval){items.sort((a,b)=>(b.valn||0)-(a.valn||0));}
+  if(localStorage.getItem('gap_nxt')==='1'){items=items.filter(x=>x.nxt); document.getElementById('filtnxt').classList.add('active');}
+  if(localStorage.getItem('gap_sort')==='val'){items.sort((a,b)=>(b.valn||0)-(a.valn||0)); document.getElementById('sortval').textContent='점수순'; document.getElementById('sortval').classList.add('active');}
+  else{document.getElementById('sortval').textContent='거래대금순';}
   for(const it of items){
     const r=document.createElement('div');
     r.className='row'; if(it.nxt) r.dataset.nxt='1'; r.dataset.val=it.valn||0;
@@ -47,22 +45,17 @@ function render(){
   }
 }
 document.getElementById('filtnxt').onclick=function(){
-  const v=localStorage.getItem('gap_nxt')==='1';
-  if(v){localStorage.removeItem('gap_nxt'); this.classList.remove('active');}
-  else{localStorage.setItem('gap_nxt','1'); this.classList.add('active');}
+  if(localStorage.getItem('gap_nxt')==='1'){localStorage.removeItem('gap_nxt');this.classList.remove('active');}
+  else{localStorage.setItem('gap_nxt','1');this.classList.add('active');}
   render();
 };
 document.getElementById('sortval').onclick=function(){
-  const v=localStorage.getItem('gap_sort')==='val';
-  if(v){localStorage.removeItem('gap_sort'); this.textContent='거래대금순'; this.classList.remove('active');}
-  else{localStorage.setItem('gap_sort','val'); this.textContent='점수순'; this.classList.add('active');}
+  if(localStorage.getItem('gap_sort')==='val'){localStorage.removeItem('gap_sort');}
+  else{localStorage.setItem('gap_sort','val');}
   render();
 };
 document.getElementById('upd').onclick=function(){location.reload();};
-if(localStorage.getItem('gap_nxt')==='1') document.getElementById('filtnxt').classList.add('active');
-if(localStorage.getItem('gap_sort')==='val'){document.getElementById('sortval').classList.add('active'); document.getElementById('sortval').textContent='점수순';}
 render();
 </script>
 </body>
 </html>
-
