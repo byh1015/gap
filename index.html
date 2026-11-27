@@ -1,61 +1,411 @@
 <!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
+<html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GapUp Screener</title>
+<title>갭 스캐너 · 전종목 · 최근 3거래일 5%+</title>
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0b1020;color:#e6e9f2}
-header{padding:12px 16px;border-bottom:1px solid #1d2542;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-h1{font-size:16px;margin:0}
-button{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#161e33;border:1px solid #2a335c;padding:6px 10px;border-radius:8px;cursor:pointer}
-button.active{color:#fff;border-color:#5b8bff}
-.list{display:flex;flex-direction:column;gap:8px;padding:12px 16px}
-.row{display:flex;gap:12px;align-items:center;background:#12182a;border:1px solid #20284a;padding:10px 12px;border-radius:10px}
-.meta{display:flex;gap:8px;align-items:center}
-.name{font-weight:700}
-.sub{color:#9aa3c7;font-size:12px}
-.val{margin-left:auto;color:#c9d1ff}
-details.nws{padding:0 16px 16px}
-</style>
-</head>
-<body>
-<header>
-<h1>GapUp</h1>
-<button id="filtnxt" type="button">NXT만</button>
-<button id="sortval" type="button">거래대금순</button>
-<button id="upd" type="button">새로고침 </button>
-</header>
-<div class="list" id="list"></div>
-<details class="nws"><summary>뉴스</summary><div id="news"></div></details>
-<script>
-const data=[];
-function render(){
-  const list=document.getElementById('list');
-  list.innerHTML='';
-  let items=[...data];
-  if(localStorage.getItem('gap_nxt')==='1'){items=items.filter(x=>x.nxt); document.getElementById('filtnxt').classList.add('active');}
-  if(localStorage.getItem('gap_sort')==='val'){items.sort((a,b)=>(b.valn||0)-(a.valn||0)); document.getElementById('sortval').textContent='점수순'; document.getElementById('sortval').classList.add('active');}
-  else{document.getElementById('sortval').textContent='거래대금순';}
-  for(const it of items){
-    const r=document.createElement('div');
-    r.className='row'; if(it.nxt) r.dataset.nxt='1'; r.dataset.val=it.valn||0;
-    r.innerHTML='<div class="meta"><div class="name">'+it.name+'</div><div class="sub">'+it.code+'</div></div><div class="val">'+(it.val||'')+'</div>';
-    list.appendChild(r);
-  }
+*{box-sizing:border-box}
+body{margin:0;background:#070b14;color:#e8edf8;
+font-family:"Pretendard Variable",Pretendard,"Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+-webkit-font-smoothing:antialiased;padding-bottom:70px}
+.wrap{max-width:1020px;margin:0 auto;padding:30px 20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+.brand{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.brand i{font-style:normal;color:#ff4d6a}
+.brand span{color:#5d6b8c;font-weight:600;margin-left:9px;font-size:13.5px}
+.upd{color:#5d6b8c;font-size:12.5px}
+.tools{display:flex;align-items:center;gap:12px}
+button#filtnxt{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#161e33;border:1px solid #28355e;border-radius:10px;padding:7px 12px;cursor:pointer}button#filtnxt.on{color:#fff;background:#263a7a;border-color:#3a56b8}
+button#sortval{font:inherit;font-size:12.5px;font-weight:700;color:#b7c3e6;background:#161e33;border:1px solid #28355e;border-radius:10px;padding:7px 12px;cursor:pointer}button#sortval.on{color:#fff;background:#263a7a;border-color:#3a56b8}
+button#upd{font:inherit;font-size:13px;font-weight:700;color:#dbe6ff;background:#1a2740;border:1px solid #2c3d63;border-radius:10px;padding:8px 15px;cursor:pointer;transition:.15s ease}
+button#upd:hover{background:#22325a;border-color:#3c5488}
+button#upd:disabled{opacity:.7;cursor:default}
+button#upd.load{color:#ffd9a0;border-color:#5b4a2a;background:#241d10}
+button#sort{font:inherit;font-size:13px;font-weight:700;color:#cbd8f5;background:#161f33;border:1px solid #2c3d63;border-radius:10px;padding:8px 13px;cursor:pointer;transition:.15s ease}
+button#sort:hover{background:#1d2a45;border-color:#3c5488}
+.warn{background:#2a1520;border:1px solid #5b2a3c;color:#ffb3c1;padding:11px 15px;border-radius:11px;margin-bottom:16px;font-size:14px}
+.hero h1{font-size:36px;font-weight:800;letter-spacing:-1.2px;margin:0}
+.hero h1 em{font-style:normal;color:#ff4d6a}
+.hero p{color:#7d8bb0;font-size:14.5px;margin:8px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:26px 0 28px}
+.st{background:linear-gradient(155deg,#111a2b,#0b1220);border:1px solid #1d2842;border-radius:16px;padding:17px 18px 15px}
+.st b{display:block;font-size:30px;font-weight:800;letter-spacing:-1.2px;font-variant-numeric:tabular-nums;line-height:1.1}
+.st span{display:block;color:#6b7aa0;font-size:12.5px;margin-top:5px}
+.st.gap b{color:#ff4d6a}
+.st.up b{color:#3ddc97}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:18px;background:#0e1626;border:1px solid #1c2740;border-radius:15px;
+padding:16px 20px;transition:.16s ease}
+.row:hover{background:#131d33;border-color:#2e3f66;transform:translateY(-1px)}
+.row.hot{background:linear-gradient(95deg,#1b1122,#0e1626 65%);border-color:#4a2437}
+.l{flex:1;min-width:0}
+.nm{font-size:18px;font-weight:700;letter-spacing:-.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd{font-size:12.5px;font-weight:600;color:#6b7aa0;background:#161f35;padding:3px 8px;border-radius:7px;margin-left:9px;vertical-align:2px}
+.chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chip{font-size:12px;color:#8fa0c4;background:#151e33;border:1px solid #26314f;border-radius:99px;padding:3.5px 10px}
+.chip.d{color:#ffd1d9;background:#2b1521;border-color:#4d2436}
+.chip.kq{color:#c8b6ff;background:#1e1633;border-color:#3a2c66}
+.nxt{font-size:9.5px;font-weight:800;letter-spacing:.1em;color:#4ade80;background:#0d2a1d;border:1px solid #1e4d36;border-radius:4px;padding:1.5px 5px;margin-left:7px;vertical-align:2px}
+.grp{display:flex;align-items:center;gap:10px;margin:18px 0 9px;font-size:12.5px;font-weight:800;color:#9fb0cf;letter-spacing:.04em}
+.grp::after{content:"";flex:1;height:1px;background:#1f2a44}
+.grp .gn{font-weight:600;font-size:11px;color:#65739a}
+.grp:first-child{margin-top:4px}
+.chip.heat{border-color:transparent}
+.chip.heat.h0{color:#8b96ad;background:#212938}
+.chip.heat.h1{color:#a9c6ff;background:#233657;border-color:#2f4a76}
+.chip.heat.h2{color:#6fe3c6;background:#123f37;border-color:#1e5c4e}
+.chip.heat.h3{color:#ffc57a;background:#43311a;border-color:#664a24}
+.chip.heat.h4{color:#ff96ab;background:#4a1a26;border-color:#712a3c}
+.chip.tot{font-weight:800;letter-spacing:-.2px}
+.chip.tot.hi{color:#f0c8ff;background:#3a1f4d;border-color:#6b3f86}
+.chip.tot.md{color:#a9d0ff;background:#1f3347;border-color:#3a5f80}
+.chip.tot.lo{color:#8b96ad;background:#1d2330;border-color:#333d52}
+.chip.thm{color:#7ee0a3;background:#0f2419;border-color:#1e4d36}
+.als{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.al{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;padding:3.5px 9px;border-radius:7px;text-decoration:none;border:1px solid;line-height:1.55}
+.al i{font-style:normal;font-weight:600;opacity:.72;font-variant-numeric:tabular-nums;letter-spacing:0}
+.al:hover{filter:brightness(1.3);text-decoration:none}
+.al-w{color:#ffc9c9;background:#3a1418;border-color:#7d2b32}
+.al-c{color:#ffdfad;background:#3a2a12;border-color:#7d5a24}
+.al-h{color:#cfe6ff;background:#13283c;border-color:#2a5b86}
+.g{width:132px;text-align:right}
+.g b{display:block;font-size:27px;font-weight:800;color:#ff8a3d;letter-spacing:-1.4px;font-variant-numeric:tabular-nums}
+.tr{display:block;height:5px;border-radius:5px;background:#1c2740;margin-top:8px;overflow:hidden}
+.tr em{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#ff4d6a,#ff9a3d)}
+.r{width:128px;text-align:right}
+.p{font-size:17.5px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.a{font-size:13.5px;font-weight:700;margin-top:5px;font-variant-numeric:tabular-nums}
+.a.up{color:#3ddc97}.a.dn{color:#ff6b8a}
+.nws{margin-top:10px}
+.nws summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#93a4c8;user-select:none}
+.nws summary::-webkit-details-marker{display:none}
+.nws summary:hover{color:#cdd9f2}
+.nws summary .nd{color:#4f5f82;font-weight:600}
+.nws summary .nsum{color:#6b7794;font-variant-numeric:tabular-nums}
+.nws summary::after{content:"▾";font-size:10px;color:#4f5f82;transition:transform .15s}
+.nws[open] summary::after{transform:rotate(180deg)}
+.nws .nlist{display:flex;flex-direction:column;gap:3px;margin-top:6px;padding-left:2px}
+.nws .nlist a{font-size:12.5px;color:#93a4c8;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.nws .nlist a:hover{color:#cdd9f2;text-decoration:underline}
+.nws .nlist a.fresh{color:#8ff0b5}.nws .nlist a.fresh .nd{color:#3ddc97}
+.nws .nlist a.warm{color:#d7c98a}.nws .nlist a.warm .nd{color:#b9a54e}
+.nws .nlist a.stale{color:#6b7794}.nws .nlist a.stale .nd{color:#4f5f82}
+.nws .nd{color:#4f5f82;font-variant-numeric:tabular-nums;margin-right:7px;font-weight:600}
+.nws .no{font-size:12.5px;color:#4f5f82}
+.empty{color:#6b7aa0;text-align:center;padding:54px 10px;background:#0e1626;border:1px dashed #26314f;border-radius:15px;font-size:16px}
+.foot{color:#5d6b8c;font-size:13px;line-height:1.9;margin-top:26px}
+@media(max-width:660px){
+ .wrap{padding:18px 13px}
+ .top{gap:10px;margin-bottom:18px}
+ .brand{font-size:15px}.brand span{font-size:12px;margin-left:6px}
+ .tools{gap:8px;width:100%}
+ .upd{font-size:11.5px;order:3;width:100%}
+ button#upd,button#sort{font-size:12px;padding:7px 11px}
+ .hero h1{font-size:25px}
+ .hero p{font-size:13px}
+ .stats{grid-template-columns:repeat(2,1fr);gap:9px;margin:18px 0 20px}
+ .st{padding:13px 14px 11px;border-radius:13px}
+ .st b{font-size:24px}
+ .st span{font-size:11.5px}
+ .list{gap:9px}
+ .row{flex-wrap:wrap;padding:13px 14px;gap:8px 12px}
+ .l{flex:1 1 100%;order:1}
+ .nm{font-size:16px}
+ .cd{display:none}
+ .chips{margin-top:6px;gap:5px}
+ .chip{font-size:11px;padding:3px 8px}
+ .g{width:auto;order:2;flex:0 0 auto;text-align:left}
+ .g b{font-size:23px;display:inline-block}
+ .tr{display:none}
+ .r{width:auto;order:3;flex:1;text-align:right}
+ .p{font-size:15.5px}
+ .a{font-size:12.5px;margin-top:3px}
+ .nws summary{font-size:12px}
+ .nws .nlist a{font-size:12px;white-space:normal;line-height:1.45}
+ .foot{font-size:12px;line-height:1.75;margin-top:20px}
 }
-document.getElementById('filtnxt').onclick=function(){
-  if(localStorage.getItem('gap_nxt')==='1'){localStorage.removeItem('gap_nxt');this.classList.remove('active');}
-  else{localStorage.setItem('gap_nxt','1');this.classList.add('active');}
-  render();
-};
-document.getElementById('sortval').onclick=function(){
-  if(localStorage.getItem('gap_sort')==='val'){localStorage.removeItem('gap_sort');}
-  else{localStorage.setItem('gap_sort','val');}
-  render();
-};
-document.getElementById('upd').onclick=function(){location.reload();};
-render();
+</style></head>
+<body><div class="wrap">
+ <div class="top">
+  <div class="brand">GAP<i>&middot;</i>SCAN <span>전종목 스캐너</span></div>
+   <div class="tools"><span class="upd">데이터 2026-11-27 18:14 (신규) (KST)</span><button id="filtnxt" type="button">NXT만</button><button id="sortval" type="button">거래대금순</button><button id="upd" type="button">새로고침</button></div> </div>
+ 
+ <div class="hero">
+  <h1>갭 <em>5%</em> 이상</h1>
+  <p>전종목 KOSPI+KOSDAQ &middot; 최근 3거래일 &middot; 시가 &gt; 전일종가 &times; 1.05 &middot; 갭일 거래대금 200억+</p>
+ </div>
+ <div class="stats">
+  <div class="st gap"><b>20</b><span>감지 종목</span></div>
+  <div class="st"><b>15</b><span>최근 1~2일 갭</span></div>
+  <div class="st"><b>+19.8%</b><span>최고 갭</span></div>
+  <div class="st up"><b>0</b><span>NXT 거래가능</span></div>
+ </div>
+ <div class="list">
+<div class="grp">오늘<span class="gn">7개</span></div>
+<div class="row hot" data-score="3" data-nxt="0" data-val="762">
+ <div class="l">
+  <div class="nm">하나에어로<span class="cd">271160</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">762억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">우주항공산업(누리호/인공위성 등)(3) · 2026 하반기 신규상장(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">오늘 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://www.edaily.co.kr/News/Read?newsId=03312806645649984&amp;amp;mediaCodeNo=257&amp;amp;utm_source=naver&amp;amp;utm_medium=referral&amp;amp;utm_campaign=news_syndication&amp;amp;utm_content=original_article" target="_blank" rel="noopener"><span class="nd">오늘</span>석유공사·국립암센터, AI 신뢰성 검증 요구…공공시장 수주 기준 바뀐...</a></div></details>
+ </div>
+ <div class="g"><b>+10.8%</b><i class="tr"><em style="width:71.8%"></em></i></div>
+ <div class="r"><div class="p">5,470</div></div>
+</div>
+<div class="row hot" data-score="5" data-nxt="0" data-val="729">
+ <div class="l">
+  <div class="nm">클로봇<span class="cd">466100</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">729억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">로봇(산업용/협동로봇 등)(3)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 4건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/020/0003765789" target="_blank" rel="noopener"><span class="nd">1분 전</span>돌발상황도 AI가 스스로 복구…클로봇, 美 MIT와 ‘제조 피지컬 AI’ 공...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001207706" target="_blank" rel="noopener"><span class="nd">1분 전</span>[특징주] 삼성전자 휴머노이드 공개 기대감에…로봇주 上</a><a class="fresh" href="https://www.ppss.kr/news/articleView.html?idxno=323498" target="_blank" rel="noopener"><span class="nd">1시간 전</span>[오늘의 특징주] 제닉스로보틱스·코스모로보틱스 상한가…로봇 표준화...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/030/0003490273" target="_blank" rel="noopener"><span class="nd">어제</span>클로봇, &#x27;스팟&#x27; 사업 매출 100억 돌파 눈앞…산업 현장 공략 확대</a></div></details>
+ </div>
+ <div class="g"><b>+9.1%</b><i class="tr"><em style="width:60.4%"></em></i></div>
+ <div class="r"><div class="p">23,650</div></div>
+</div>
+<div class="row hot" data-score="4" data-nxt="0" data-val="2,336">
+ <div class="l">
+  <div class="nm">에이피알<span class="cd">278470</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">2,336억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">화장품(3)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 8건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/277/0005848991" target="_blank" rel="noopener"><span class="nd">1분 전</span>美틱톡샵 1·2위가 한집에…에이피알의 3900억 베팅[주末머니]</a><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001207828" target="_blank" rel="noopener"><span class="nd">1분 전</span>병원 시술에 홈케어까지 ‘풀케어’가 대세… 에이피알, 피부과 정조...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/025/0003568457" target="_blank" rel="noopener"><span class="nd">1분 전</span>에이피알, ‘닥터멜락신’ 운영사 3900억원에 인수</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005447229" target="_blank" rel="noopener"><span class="nd">1분 전</span>&amp;quot;에이피알, 브랜드501 인수는 성공 방정식…목표가 46만원 유지&amp;quot;-NH</a><a class="fresh" href="https://n.news.naver.com/mnews/article/008/0005447224" target="_blank" rel="noopener"><span class="nd">1분 전</span>&amp;quot;에이피알의 닥터멜란신 인수, 주가 트리거 될 것&amp;quot;-교보</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006416341" target="_blank" rel="noopener"><span class="nd">1분 전</span>[MUST KNOW5]엔비디아 GPU 구매 조건 강화·에이피알 애프터 급등...투...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004686684" target="_blank" rel="noopener"><span class="nd">어제</span>에이피알, ‘닥터멜락신’ 운영사 브랜드501 3900억 원에 인수</a><a class="fresh" href="https://n.news.naver.com/mnews/article/374/0000546140" target="_blank" rel="noopener"><span class="nd">어제</span>에이피알 &amp;quot;브랜드501 주식 700억원어치 추가취득…지분율 87.3%&amp;quot;</a></div></details>
+ </div>
+ <div class="g"><b>+7.9%</b><i class="tr"><em style="width:52.5%"></em></i></div>
+ <div class="r"><div class="p">299,500</div></div>
+</div>
+<div class="row hot" data-score="10" data-nxt="0" data-val="433">
+ <div class="l">
+  <div class="nm">아리바이오랩<span class="cd">261780</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">433억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">코로나19(치료제/백신 개발 등)(2) · 코로나19(진단/치료제/백신 개발 등)(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001207709" target="_blank" rel="noopener"><span class="nd">1분 전</span>[특징주] 아리바이오 직상장 소식에…아리바이오홀딩스 6% 급락</a><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001207382" target="_blank" rel="noopener"><span class="nd">어제</span>﻿아리바이오, 주주 설명회서 직상장 계획 발표… 추후 아리바이오랩...</a></div></details>
+ </div>
+ <div class="g"><b>+7.2%</b><i class="tr"><em style="width:48.0%"></em></i></div>
+ <div class="r"><div class="p">4,410</div></div>
+</div>
+<div class="row" data-score="8" data-nxt="0" data-val="272">
+ <div class="l">
+  <div class="nm">지투지바이오<span class="cd">456160</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">272억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">비만치료제(2) · 치매(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">8시간 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://www.widedaily.com/news/articleView.html?idxno=304907" target="_blank" rel="noopener"><span class="nd">8시간 전</span>[특징주] 올릭스, RNAi 신약·차세대 비만치료제 기대감에 장중 10% 넘게...</a><a class="fresh" href="https://www.widedaily.com/news/articleView.html?idxno=304905" target="_blank" rel="noopener"><span class="nd">8시간 전</span>[특징주] 디앤디파마텍, 비만치료제 매수세 유입에 급등...경구화 플랫폼...</a></div></details>
+ </div>
+ <div class="g"><b>+6.5%</b><i class="tr"><em style="width:43.4%"></em></i></div>
+ <div class="r"><div class="p">50,400</div></div>
+</div>
+<div class="row" data-score="7" data-nxt="0" data-val="303">
+ <div class="l">
+  <div class="nm">펩트론<span class="cd">087010</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">303억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">코로나19(치료제/백신 개발 등)(2) · 비만치료제(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/119/0003160205" target="_blank" rel="noopener"><span class="nd">1분 전</span>펩트론, 유럽 페링과 &#x27;스마트데포&#x27; 기술평가 계약</a><a class="fresh" href="https://www.medicopharma.co.kr/news/articleView.html?idxno=70700" target="_blank" rel="noopener"><span class="nd">49분 전</span>[바이오 마감 브리핑] 항암 신약주 급등…큐리언트 상한가·에이비엘 27...</a></div></details>
+ </div>
+ <div class="g"><b>+5.6%</b><i class="tr"><em style="width:37.2%"></em></i></div>
+ <div class="r"><div class="p">97,500</div></div>
+</div>
+<div class="row" data-score="3" data-nxt="0" data-val="310">
+ <div class="l">
+  <div class="nm">인제니아테라퓨틱스(Reg.S)<span class="cd">950260</span></div>
+  <div class="chips"><span class="chip">오늘</span><span class="chip v">310억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">2026 하반기 신규상장(2)</span></div>
+  
+  
+ </div>
+ <div class="g"><b>+5.5%</b><i class="tr"><em style="width:36.4%"></em></i></div>
+ <div class="r"><div class="p">30,950</div></div>
+</div>
+<div class="grp">1일 전<span class="gn">8개</span></div>
+<div class="row hot" data-score="12" data-nxt="0" data-val="241">
+ <div class="l">
+  <div class="nm">TPC로보틱스<span class="cd">048770</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">241억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">로봇(산업용/협동로봇 등)(3)</span></div>
+  
+  
+ </div>
+ <div class="g"><b>+19.8%</b><i class="tr"><em style="width:100.0%"></em></i></div>
+ <div class="r"><div class="p">4,350</div></div>
+</div>
+<div class="row hot" data-score="15" data-nxt="0" data-val="474">
+ <div class="l">
+  <div class="nm">나무가<span class="cd">190510</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">474억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">로봇(산업용/협동로봇 등)(3)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">어제 · 5건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/030/0003490272" target="_blank" rel="noopener"><span class="nd">어제</span>나무가, 50억 규모 자사주 소각</a><a class="fresh" href="https://n.news.naver.com/mnews/article/030/0003490168" target="_blank" rel="noopener"><span class="nd">어제</span>[ET특징주]나무가, 북미 휴머노이드 공급망 진입에 상승세</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006415774" target="_blank" rel="noopener"><span class="nd">어제</span>나무가, 50억 규모 자사주 소각 결정</a><a class="fresh" href="https://n.news.naver.com/mnews/article/081/0003703339" target="_blank" rel="noopener"><span class="nd">어제</span>검색 1·2위 삼성전자·SK하이닉스 동반 상승… 나무가 17% 급등</a><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006415702" target="_blank" rel="noopener"><span class="nd">어제</span>나무가, 북미 휴머노이드 카메라 단독 공급…피지컬 AI 기업으로 변신...</a></div></details>
+ </div>
+ <div class="g"><b>+16.3%</b><i class="tr"><em style="width:100.0%"></em></i></div>
+ <div class="r"><div class="p">18,130</div></div>
+</div>
+<div class="row hot" data-score="10" data-nxt="0" data-val="656">
+ <div class="l">
+  <div class="nm">대주전자재료<span class="cd">078600</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">656억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">태양광에너지(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">8시간 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://www.widedaily.com/news/articleView.html?idxno=304915" target="_blank" rel="noopener"><span class="nd">8시간 전</span>[특징주] 엔켐, 2차전지 소재주 매수세 유입에 장중 13% 넘게 올라</a></div></details>
+ </div>
+ <div class="g"><b>+10.8%</b><i class="tr"><em style="width:72.1%"></em></i></div>
+ <div class="r"><div class="p">93,600</div></div>
+</div>
+<div class="row hot" data-score="11" data-nxt="0" data-val="1,187">
+ <div class="l">
+  <div class="nm">스피어<span class="cd">347700</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">1,187억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">스페이스X(SpaceX)(2) · 의료AI(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">어제 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/030/0003490194" target="_blank" rel="noopener"><span class="nd">어제</span>[ET특징주] 스페이스X &#x27;우주 데이터센터&#x27; 위성 배치 승인… 국내 관련...</a></div></details>
+ </div>
+ <div class="g"><b>+9.5%</b><i class="tr"><em style="width:63.6%"></em></i></div>
+ <div class="r"><div class="p">24,250</div></div>
+</div>
+<div class="row hot" data-score="11" data-nxt="0" data-val="738">
+ <div class="l">
+  <div class="nm">RFHIC<span class="cd">218410</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">738억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  
+  
+ </div>
+ <div class="g"><b>+7.8%</b><i class="tr"><em style="width:52.2%"></em></i></div>
+ <div class="r"><div class="p">66,200</div></div>
+</div>
+<div class="row" data-score="3" data-nxt="0" data-val="441">
+ <div class="l">
+  <div class="nm">OCI홀딩스<span class="cd">010060</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">441억</span><span class="chip">KOSPI</span><span class="chip thm" title="현재 목록에서 같은 테마">태양광에너지(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006416432" target="_blank" rel="noopener"><span class="nd">1분 전</span>SGC E&amp;amp;C, 1200억 용인 반도체 캠퍼스 신축공사 수주</a><a class="fresh" href="https://n.news.naver.com/mnews/article/031/0001078530" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] OCI홀딩스 10% 급등⋯스페이스X &#x27;우주 데이터센터&#x27; 수혜</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016466182" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] 태양광주, 유가급등·우주 AIDC 기대감 등에 일부 상승(종합...</a></div></details>
+ </div>
+ <div class="g"><b>+6.4%</b><i class="tr"><em style="width:43.0%"></em></i></div>
+ <div class="r"><div class="p">180,000</div></div>
+</div>
+<div class="row" data-score="8" data-nxt="0" data-val="320">
+ <div class="l">
+  <div class="nm">에이치브이엠<span class="cd">295310</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">320억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">스페이스X(SpaceX)(2) · 우주항공산업(누리호/인공위성 등)(3)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">어제 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/018/0006416092" target="_blank" rel="noopener"><span class="nd">어제</span>에이치브이엠, 110억 규모 공급계약 체결</a><a class="fresh" href="https://n.news.naver.com/mnews/article/654/0000213666" target="_blank" rel="noopener"><span class="nd">어제</span>스페이스X 위성 100만 기 발사 승인…머스크, 복귀한 젠슨 황 찾아</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016466140" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] 스페이스X &#x27;우주 데이터센터&#x27; 위성 승인…관련주 급등(종합...</a></div></details>
+ </div>
+ <div class="g"><b>+6.3%</b><i class="tr"><em style="width:41.8%"></em></i></div>
+ <div class="r"><div class="p">63,400</div></div>
+</div>
+<div class="row" data-score="6" data-nxt="0" data-val="298">
+ <div class="l">
+  <div class="nm">티엘비<span class="cd">356860</span></div>
+  <div class="chips"><span class="chip">1일 전</span><span class="chip v">298억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">9시간 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://www.etoday.co.kr/news/view/2653713" target="_blank" rel="noopener"><span class="nd">9시간 전</span>현대차證 “반도체 기판주, 최악 반영한 주가⋯AI 수요·공급 부족은 여...</a><a class="fresh" href="https://www.widedaily.com/news/articleView.html?idxno=304787" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] 심텍홀딩스, 반도체 기판 테마 매수세 유입에 급등…PCB 지주사...</a><a class="fresh" href="https://www.widedaily.com/news/articleView.html?idxno=304783" target="_blank" rel="noopener"><span class="nd">어제</span>[특징주] 태성, 기판·배터리 테마 매수세 유입에 강세…습식 공정 장비...</a></div></details>
+ </div>
+ <div class="g"><b>+5.5%</b><i class="tr"><em style="width:37.0%"></em></i></div>
+ <div class="r"><div class="p">40,000</div></div>
+</div>
+<div class="grp">2일 전<span class="gn">5개</span></div>
+<div class="row hot" data-score="15" data-nxt="0" data-val="209">
+ <div class="l">
+  <div class="nm">휴림에이텍<span class="cd">078590</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">209억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span></div>
+  <div class="als"><a class="al al-w" href="https://m.stock.naver.com/domestic/stock/078590/management/disclosure" target="_blank" rel="noopener" title="(주)휴림에이텍 [투자주의]투자경고종목 지정예고"><b>투자경고</b><i>11/24</i></a></div>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">1분 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001207706" target="_blank" rel="noopener"><span class="nd">1분 전</span>[특징주] 삼성전자 휴머노이드 공개 기대감에…로봇주 上</a></div></details>
+ </div>
+ <div class="g"><b>+8.9%</b><i class="tr"><em style="width:59.4%"></em></i></div>
+ <div class="r"><div class="p">4,405</div></div>
+</div>
+<div class="row hot" data-score="6" data-nxt="0" data-val="566">
+ <div class="l">
+  <div class="nm">루닛<span class="cd">328130</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">566억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">의료AI(2)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">3일 전 · 1건</span></summary><div class="nlist"><a class="warm" href="https://n.news.naver.com/mnews/article/008/0005445640" target="_blank" rel="noopener"><span class="nd">3일 전</span>美 영상학회 휩쓴 루닛…암 찾던 AI, 발병 위험까지 예측</a></div></details>
+ </div>
+ <div class="g"><b>+8.9%</b><i class="tr"><em style="width:59.3%"></em></i></div>
+ <div class="r"><div class="p">17,690</div></div>
+</div>
+<div class="row hot" data-score="14" data-nxt="0" data-val="232">
+ <div class="l">
+  <div class="nm">뷰티스킨<span class="cd">406820</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">232억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">화장품(3)</span></div>
+  <div class="als"><a class="al al-w" href="https://m.stock.naver.com/domestic/stock/406820/management/disclosure" target="_blank" rel="noopener" title="(주)뷰티스킨 [투자주의]투자경고종목 지정예고"><b>투자경고</b><i>11/25</i></a></div>
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2일 전 · 3건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004685945" target="_blank" rel="noopener"><span class="nd">2일 전</span>한중 관계 개선 기대에 화장품주 강세…뷰티스킨 25%대 급등 [이런국장...</a><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016463214" target="_blank" rel="noopener"><span class="nd">2일 전</span>[특징주] 화장품주, 연말 성수기 매출성장 기대감에 강세 마감(종합)</a><a class="fresh" href="https://n.news.naver.com/mnews/article/366/0001207138" target="_blank" rel="noopener"><span class="nd">2일 전</span>[특징주] 화장품株, 장 초반 강세… 한·중 교류 확대와 K-뷰티 수출 호...</a></div></details>
+ </div>
+ <div class="g"><b>+8.0%</b><i class="tr"><em style="width:53.3%"></em></i></div>
+ <div class="r"><div class="p">2,250</div></div>
+</div>
+<div class="row" data-score="12" data-nxt="0" data-val="1,412">
+ <div class="l">
+  <div class="nm">한진칼우<span class="cd">18064K</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">1,412억</span><span class="chip">KOSPI</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">어제 · 2건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/421/0009312837" target="_blank" rel="noopener"><span class="nd">어제</span>이달 4배로 뛴 한진칼우…장중 21% 급등했다 제자리[핫종목]</a><a class="fresh" href="https://n.news.naver.com/mnews/article/011/0004686010" target="_blank" rel="noopener"><span class="nd">2일 전</span>한진칼우 장중 16% 급등…조원태·호반 지분 경쟁에 [이런국장 저런주...</a></div></details>
+ </div>
+ <div class="g"><b>+5.2%</b><i class="tr"><em style="width:34.9%"></em></i></div>
+ <div class="r"><div class="p">111,800</div></div>
+</div>
+<div class="row" data-score="3" data-nxt="0" data-val="921">
+ <div class="l">
+  <div class="nm">실리콘투<span class="cd">257720</span></div>
+  <div class="chips"><span class="chip">2일 전</span><span class="chip v">921억</span><span class="chip"><span class="chip kq">KOSDAQ</span></span><span class="chip thm" title="현재 목록에서 같은 테마">화장품(3)</span></div>
+  
+  <details class="nws"><summary><span class="nd">뉴스</span><span class="nsum">2일 전 · 1건</span></summary><div class="nlist"><a class="fresh" href="https://n.news.naver.com/mnews/article/001/0016463214" target="_blank" rel="noopener"><span class="nd">2일 전</span>[특징주] 화장품주, 연말 성수기 매출성장 기대감에 강세 마감(종합)</a></div></details>
+ </div>
+ <div class="g"><b>+5.0%</b><i class="tr"><em style="width:33.6%"></em></i></div>
+ <div class="r"><div class="p">30,250</div></div>
+</div>
+ </div>
+ <div class="foot">
+  갭 = 시가 &divide; 전일종가 &minus; 1 &nbsp;&middot;&nbsp; &lsquo;갭 이후&rsquo;는 갭 발생일 종가 대비 현재 등락 &nbsp;&middot;&nbsp; 주황 바는 15% 기준<br>
+   다음 거래일 시가가 전일종가 대비 5% 이상으로 갭업할 확률. &nbsp;&middot;&nbsp; 같은 테마가 함께 있는 종목만 `동일테마` 배지 &nbsp;&middot;&nbsp; 우상단 &#8645; 로 내일순 정렬<br>
+  스캔 2764종목 (데이터 확보) &middot; 우상단 &#8635; 업데이트 &rarr; GitHub Actions 에서 Run workflow (약 2분)
+ </div>
+</div>
+<script>
+(function(){
+  var fn=document.getElementById('filtnxt');
+  if(fn){var on=false;fn.addEventListener('click',function(){on=!on;fn.classList.toggle('on',on);document.querySelectorAll('.list > .row').forEach(function(r){if(!on){r.style.display='';return;}r.style.display=r.getAttribute('data-nxt')==='1'?'':'none';});});}
+
+ var b=document.getElementById('upd'); if(!b) return;
+ var host=location.hostname;
+ var pages=host.indexOf('github.io')>=0;
+ var orig='↻ 업데이트';
+ function set(t,d){b.textContent=t;b.disabled=d;b.classList.toggle('load',d);}
+ b.addEventListener('click',function(){
+   if(pages){
+     b.textContent='갱신 페이지…';
+     location.href='https://github.com/byh1015/gap/actions/workflows/gap-scan.yml';
+     return;
+   }
+   if(location.protocol!=='http:'&&location.protocol!=='https:'){alert('서버 모드로 열어야 합니다.');return;}
+   set('갱신 중…',true);
+   fetch('/update',{method:'POST'}).then(function(r){return r.json();}).then(function(){
+     var iv=setInterval(function(){
+       fetch('/status').then(function(r){return r.json();}).then(function(s){
+         if(!s.updating){clearInterval(iv);
+           if(s.error){set(orig,false);alert('갱신 실패: '+s.error);}
+           else{set('완료 · 다시 여는 중',true);location.reload();}
+         }
+       }).catch(function(){});
+     },2000);
+   }).catch(function(){set(orig,false);alert('서버 응답 없음');});
+ });
+})();
+ (function(){
+  var sb=document.getElementById('sort'); if(!sb) return;
+  var wrap=document.querySelector('.rows'); if(!wrap) return;
+  var orig=Array.prototype.slice.call(wrap.children);
+  var cards=Array.prototype.slice.call(wrap.querySelectorAll('.row'));
+  var grps=Array.prototype.slice.call(wrap.querySelectorAll('.grp'));
+  var byScore=false;
+  function saveOpen(){
+   return cards.map(function(c){var d=c.querySelector('details.nws');return !!(d&&d.open);});
+  }
+  function restoreOpen(st){
+   cards.forEach(function(c,i){var d=c.querySelector('details.nws');if(d)d.open=!!st[i];});
+  }
+  sb.addEventListener('click',function(){
+   var st=saveOpen();
+   if(!byScore){
+     function applySort(){var mode=localStorage.getItem('gap_sort')||'score';cards.slice().sort(function(a,b){if(mode==='val'){var av=parseFloat(a.getAttribute('data-val'))||0,bv=parseFloat(b.getAttribute('data-val'))||0;return bv-av;}return (parseFloat(b.getAttribute('data-score'))||0)-(parseFloat(a.getAttribute('data-score'))||0);}).forEach(function(el){wrap.appendChild(el);});var sv=document.getElementById('sortval');if(sv){sv.classList.toggle('on',mode==='val');sv.textContent=mode==='val'?'점수순':'거래대금순';}}applySort();var sv2=document.getElementById('sortval');if(sv2){sv2.addEventListener('click',function(){var m=localStorage.getItem('gap_sort')||'score';localStorage.setItem('gap_sort',m==='val'?'score':'val');applySort();});}
+     grps.forEach(function(g){g.style.display='none';});
+     sb.innerHTML='&#8645; 최신순'; byScore=true;
+   } else {
+     orig.forEach(function(el){wrap.appendChild(el);});
+     grps.forEach(function(g){g.style.display='';});
+     sb.innerHTML='&#8645; 내일순'; byScore=false;
+   }
+   restoreOpen(st);
+  });
+ })();
 </script>
-</body>
-</html>
+</body></html>
